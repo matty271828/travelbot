@@ -17,13 +17,13 @@ headers = {
 }
 
 # Airports where we can fly from: Berlin
-source_array = {"UK-sky"} 
+source_array = {"MAN-sky"} 
 # Our destination airports: Madrid, Barcelona, Seville, Valencia
-destination_array = {"JP-sky"}
+destination_array = {"anywhere"}
 
 # Dates
-source_begin_date = "2021-06-05"
-source_end_date =  "2021-06-08"  
+source_begin_date = pd.to_datetime("2021-09-05")
+source_end_date =  pd.to_datetime("2021-09-08")
 daterange_source = pd.date_range(source_begin_date, source_end_date)
 airports = { }
 
@@ -38,13 +38,13 @@ cheapest_flight_finder.setHeaders(headers)
 # Start timer
 function_start = time.time()
 
-# Contact API for cheapest flights
+# Contact API for cheapest one way flights
 with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
     for single_date in daterange_source:
         for destination in destination_array:
             for source in source_array:
                 request_start = time.time()
-                executor.submit(cheapest_flight_finder.browseQuotes,source, destination,single_date)
+                executor.submit(cheapest_flight_finder.browseonewayQuotes,source, destination, single_date)
 
 # Stats on runtime
 print("\nBenchmark Stats :")

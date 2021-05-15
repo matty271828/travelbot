@@ -19,7 +19,7 @@ class finder:
         self.session.headers.update(self.headers)
         return self.session
         
-    def browseQuotes(self, source, destination, date):
+    def browseonewayQuotes(self, source, destination, date):
         quoteRequestPath = "/apiservices/browsequotes/v1.0/"
         browseQuotesURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + source + "/" + destination + "/" + date.strftime("%Y-%m-%d")
         # Use the same session to request again and again
