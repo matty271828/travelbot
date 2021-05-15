@@ -19,20 +19,37 @@ class finder:
         self.session.headers.update(self.headers)
         return self.session
         
-    def browseonewayQuotes(self, source, destination, date):
+    def browseonewayQuotes(self, source, destination, outdate):
+        self.trip_type = "oneway"
         quoteRequestPath = "/apiservices/browsequotes/v1.0/"
-        browseQuotesURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + source + "/" + destination + "/" + date.strftime("%Y-%m-%d")
+        browseonewayQuotesURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + source + "/" + destination + "/" + outdate.strftime("%Y-%m-%d")
         # Use the same session to request again and again
-        response = self.session.get(browseQuotesURL)
+        response = self.session.get(browseonewayQuotesURL)
         resultJSON = json.loads(response.text)
-        self.printResult(resultJSON,date)
+        self.printResult(resultJSON, outdate)
+        
+    def browsereturnQuotes(self, source, destination, outdate, indate):
+        self.trip_type = "return"
+        quoteRequestPath = "/apiservices/browsequotes/v1.0/"
+        browsereturnQuotesURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + source + "/" + destination + "/" + outdate.strftime("%Y-%m-%d") + "/" + indate.strftime("%Y-%m-%d")
+        # Use the same session to request again and again
+        response = self.session.get(browsereturnQuotesURL)
+        resultJSON = json.loads(response.text)
+        self.printResult(resultJSON, outdate)
         
     # A bit more elegant print
-    def printResult(self, resultJSON,date):
+    def printResult(self, resultJSON, outdate):
         if("Quotes" in resultJSON):
             for Places in resultJSON["Places"]:
                 self.airports[Places["PlaceId"]] = Places["Name"] 
             for Quotes in resultJSON["Quotes"]:
-                source = Quotes["OutboundLeg"]["OriginId"]
-                dest = Quotes["OutboundLeg"]["DestinationId"]
-                print(date.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s GBP" %Quotes["MinPrice"])
+                # return trip
+                if self.trip_type == "return":
+                    source = Quotes["OutboundLeg"]["OriginId"]
+                    dest = Quotes["OutboundLeg"]["DestinationId"]
+                    print(outdate.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s GBP" %Quotes["MinPrice"])
+                # one way trip
+                else:
+                    source = Quotes["OutboundLeg"]["OriginId"]
+                    dest = Quotes["OutboundLeg"]["DestinationId"]
+                    print(outdate.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s GBP" %Quotes["MinPrice"])
