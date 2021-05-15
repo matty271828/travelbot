@@ -2,7 +2,7 @@ import requests, datetime, json
 
 class finder:
     
-    def __init__(self, originCountry = "DE", currency = "EUR", locale = "en-US", rootURL="https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"):
+    def __init__(self, originCountry = "UK", currency = "GBP", locale = "en", rootURL="https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"):
         self.currency = currency
         self.locale =  locale
         self.rootURL = rootURL
@@ -35,4 +35,4 @@ class finder:
             for Quotes in resultJSON["Quotes"]:
                 source = Quotes["OutboundLeg"]["OriginId"]
                 dest = Quotes["OutboundLeg"]["DestinationId"]
-                print(date.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s EUR" %Quotes["MinPrice"])
+                print(date.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s GBP" %Quotes["MinPrice"])
