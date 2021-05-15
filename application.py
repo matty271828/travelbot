@@ -18,7 +18,7 @@ def search_oneway(source_array, destination_array, source_begin_date, source_end
                     executor.submit(cheapest_flight_finder.browseonewayQuotes,source, destination, single_date)
 
 def search_return(source_array, destination_array, source_begin_date, source_end_date):
-    """Function to search for one way flights between two destinations"""
+    """Function to search for return flights between two destinations"""
     # Contact API for cheapest one way flights
     with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
         for single_date in daterange_source:
@@ -44,7 +44,7 @@ destination_array = {"anywhere"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-05")
-source_end_date =  pd.to_datetime("2021-09-08")
+source_end_date =  pd.to_datetime("2021-11-08")
 daterange_source = pd.date_range(source_begin_date, source_end_date)
 airports = { }
 

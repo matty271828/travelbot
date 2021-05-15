@@ -26,7 +26,7 @@ class finder:
         # Use the same session to request again and again
         response = self.session.get(browseonewayQuotesURL)
         resultJSON = json.loads(response.text)
-        self.printResult(resultJSON, outdate)
+        self.printResult(resultJSON, outdate, None)
         
     def browsereturnQuotes(self, source, destination, outdate, indate):
         self.trip_type = "return"
@@ -35,10 +35,10 @@ class finder:
         # Use the same session to request again and again
         response = self.session.get(browsereturnQuotesURL)
         resultJSON = json.loads(response.text)
-        self.printResult(resultJSON, outdate)
+        self.printResult(resultJSON, outdate, indate)
         
     # A bit more elegant print
-    def printResult(self, resultJSON, outdate):
+    def printResult(self, resultJSON, outdate, indate):
         if("Quotes" in resultJSON):
             for Places in resultJSON["Places"]:
                 self.airports[Places["PlaceId"]] = Places["Name"] 
@@ -47,7 +47,7 @@ class finder:
                 if self.trip_type == "return":
                     source = Quotes["OutboundLeg"]["OriginId"]
                     dest = Quotes["OutboundLeg"]["DestinationId"]
-                    print(outdate.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s GBP" %Quotes["MinPrice"])
+                    print(outdate.strftime("%d-%b %a") + " - " + indate.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s GBP" %Quotes["MinPrice"])
                 # one way trip
                 else:
                     source = Quotes["OutboundLeg"]["OriginId"]
