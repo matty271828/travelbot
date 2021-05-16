@@ -4,6 +4,10 @@ import concurrent.futures, threading
 import time, datetime, dateutil
 
 from classes import finder
+'''
+This page handles functions for different flight formats. Edit the number of workers in order to speed up/slow done API contacting. 
+A rate limit > 500 contacts/s will result in a response error and induce a 1 minute timeout. 
+'''
 
 # Retrieve API key
 api_key = os.environ.get("SKYSCANNER_API_KEY")
@@ -29,19 +33,18 @@ def search_oneway(source_array, destination_array, source_begin_date, source_end
         for single_date in daterange_source:
             for destination in destination_array:
                 for source in source_array:
-                    request_start = time.time()
                     executor.submit(cheapest_flight_finder.browseonewayQuotes,source, destination, single_date)
 
 def search_return(source_array, destination_array, source_begin_date, source_end_date):
     """Function to search for return flights between two destinations"""
     # Configure dates
     daterange_source = pd.date_range(source_begin_date, source_end_date)
-    
+
     # Contact API for cheapest one way flights
-    with concurrent.futures.ThreadPoolExecutor(max_workers=64) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
         for single_date in daterange_source:
             for destination in destination_array:
                 for source in source_array:
-                    request_start = time.time()
-                    return_date = single_date + datetime.timedelta(days=5) 
-                    executor.submit(cheapest_flight_finder.browsereturnQuotes, source, destination, single_date, return_date)
+                    for i in range(1, 15):
+                        return_date = single_date + datetime.timedelta(days=i) 
+                        executor.submit(cheapest_flight_finder.browsereturnQuotes, source, destination, single_date, return_date)
