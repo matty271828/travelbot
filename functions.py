@@ -10,6 +10,8 @@ This page handles functions for different flight formats. Edit the number of wor
 A rate limit > 500 contacts/s will result in a response error and induce a 1 minute timeout. 
 '''
 
+show_testcode = 'no'
+
 # Retrieve API key
 api_key = os.environ.get("SKYSCANNER_API_KEY")
 
@@ -45,14 +47,24 @@ def search_return(source_array, destination_array, source_begin_date, source_end
     with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
         for single_date in daterange_source:
             # Adjust sleep variable to slow down programme and avoid breaking API limit
+            if show_testcode == 'yes':
+                print("Sleeping for next date")
+                
             sleep(2)
             for destination in destination_array:
                 for source in source_array:
                     for i in range(1, 30):
                         # Throttle programme
-                        if i == 15:
-                            print("sleeping")
+                        if (i in [10, 20, 25]):
+                            if show_testcode == 'yes':
+                                print(f"sleeping {i}")
                             sleep(5)
+
+                        elif (i in [26, 27, 28, 29]):
+                            if show_testcode == 'yes':
+                                print(f"sleeping {i}")
+                            sleep(10)
+
                         # Execute worker    
                         return_date = single_date + datetime.timedelta(days=i) 
                         executor.submit(cheapest_flight_finder.browsereturnQuotes, source, destination, single_date, return_date, max_budget)

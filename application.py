@@ -9,14 +9,14 @@ from functions import search_oneway, search_return
 # Airports where we can fly from
 source_array = {"UK-sky"} 
 # Our destination airports
-destination_array = {"YUL-sky"}
+destination_array = {"NYCA-sky"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-05")
 source_end_date =  pd.to_datetime("2021-09-06")
 
 # Define max budget, enter as None if not wanted
-max_budget = None
+max_budget = 275
 
 # time request
 total_compute_time = 0.0
