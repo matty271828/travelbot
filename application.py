@@ -30,8 +30,3 @@ search_return(source_array, destination_array, source_begin_date, source_end_dat
 # Stats on runtime
 print("\nBenchmark Stats :")
 print("Time spent in program: %f seconds"%(time.time()-function_start))
-
-print("\nBenchmark Stats :")
-print("Time spent in computing: %f seconds"%total_compute_time )
-print("Time spent in requesting: %f seconds"%total_request_time )
-print("Time spent in program: %f seconds"%(time.time()-function_start))
