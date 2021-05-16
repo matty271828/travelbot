@@ -41,7 +41,7 @@ class finder:
         resultJSON = json.loads(response.text)
         self.printResult(resultJSON, outdate, None)
         
-    def browsereturnQuotes(self, source, destination, outdate, indate):
+    def browsereturnQuotes(self, source, destination, outdate, indate, max_budget):
         self.trip_type = "return"
         quoteRequestPath = "/apiservices/browsequotes/v1.0/"
 
@@ -55,15 +55,21 @@ class finder:
             status = response.status_code
             print(f'{status}: {skyscanner_response_codes[status]}')
 
-        self.printResult(resultJSON, outdate, indate)
+        self.printResult(resultJSON, outdate, indate, max_budget)
         
     # A bit more elegant print
-    def printResult(self, resultJSON, outdate, indate):
+    def printResult(self, resultJSON, outdate, indate, max_budget):
         # Check for response
         if("Quotes" in resultJSON):
             for Places in resultJSON["Places"]:
                 self.airports[Places["PlaceId"]] = Places["Name"] 
             for Quotes in resultJSON["Quotes"]:
+                # Check flight within budget
+                if (max_budget == None):
+                    pass
+                elif (Quotes["MinPrice"] > max_budget):
+                    break
+
                 # return trip
                 if self.trip_type == "return":
                     source = Quotes["OutboundLeg"]["OriginId"]

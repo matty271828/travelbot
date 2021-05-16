@@ -35,7 +35,7 @@ def search_oneway(source_array, destination_array, source_begin_date, source_end
                 for source in source_array:
                     executor.submit(cheapest_flight_finder.browseonewayQuotes,source, destination, single_date)
 
-def search_return(source_array, destination_array, source_begin_date, source_end_date):
+def search_return(source_array, destination_array, source_begin_date, source_end_date, max_budget):
     """Function to search for return flights between two destinations"""
     # Configure dates
     daterange_source = pd.date_range(source_begin_date, source_end_date)
@@ -47,4 +47,4 @@ def search_return(source_array, destination_array, source_begin_date, source_end
                 for source in source_array:
                     for i in range(1, 15):
                         return_date = single_date + datetime.timedelta(days=i) 
-                        executor.submit(cheapest_flight_finder.browsereturnQuotes, source, destination, single_date, return_date)
+                        executor.submit(cheapest_flight_finder.browsereturnQuotes, source, destination, single_date, return_date, max_budget)
