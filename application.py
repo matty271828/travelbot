@@ -40,7 +40,7 @@ headers = {
 # Airports where we can fly from
 source_array = {"MAN-sky"} 
 # Our destination airports
-destination_array = {"NYC-sky"}
+destination_array = {"NYCA-sky"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-05")

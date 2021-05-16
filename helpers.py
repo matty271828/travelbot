@@ -1,5 +1,18 @@
 import requests, datetime, json
 
+# Skyscanner response code dictionary
+skyscanner_response_codes = {
+                                200:"Success", 
+                                204:"No Content - the session is still being created (wait and try again).",
+                                301:"Moved Permanently – the result shows redirect location.",
+                                304:"Not Modified – the results have not been modified since the last poll.",
+                                400:"Bad Request -- Input validation failed.",
+                                403:"Forbidden -- The API Key was not supplied, or it was invalid, or it is not authorized to access the service.",
+                                410:"Gone – the session has expired. A new session must be created.",
+                                429:"Too Many Requests – There have been too many requests in the last minute.",
+                                500:"Server Error – An internal server error has occurred which has been logged."
+}
+
 class finder:
     
     def __init__(self, originCountry = "UK", currency = "GBP", locale = "en", rootURL="https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"):
@@ -40,7 +53,7 @@ class finder:
         # Check for good responses and print status code if unsuccessful
         if("Quotes" not in resultJSON):
             status = response.status_code
-            print(status)
+            print(f'{status}: {skyscanner_response_codes[status]}')
 
         self.printResult(resultJSON, outdate, indate)
         
