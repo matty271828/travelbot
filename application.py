@@ -44,7 +44,7 @@ destination_array = {"NYCA-sky"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-05")
-source_end_date =  pd.to_datetime("2021-09-20")
+source_end_date =  pd.to_datetime("2022-09-20")
 daterange_source = pd.date_range(source_begin_date, source_end_date)
 airports = { }
 
