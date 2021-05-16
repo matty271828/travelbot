@@ -1,4 +1,5 @@
 import requests, datetime, json
+from time import sleep
 
 # Skyscanner response code dictionary
 skyscanner_response_codes = {
@@ -54,6 +55,11 @@ class finder:
         if("Quotes" not in resultJSON):
             status = response.status_code
             print(f'{status}: {skyscanner_response_codes[status]}')
+
+        #Check for API limit rate exceeded
+        #if (status == 429):
+        #    print(f".....Sleeping for 1 minute......\n")
+        #    sleep(60)
 
         self.printResult(resultJSON, outdate, indate, max_budget)
         

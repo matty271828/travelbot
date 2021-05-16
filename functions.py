@@ -45,10 +45,14 @@ def search_return(source_array, destination_array, source_begin_date, source_end
     with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
         for single_date in daterange_source:
             # Adjust sleep variable to slow down programme and avoid breaking API limit
-            print("sleeping")
             sleep(2)
             for destination in destination_array:
                 for source in source_array:
                     for i in range(1, 30):
+                        # Throttle programme
+                        if i == 15:
+                            print("sleeping")
+                            sleep(5)
+                        # Execute worker    
                         return_date = single_date + datetime.timedelta(days=i) 
                         executor.submit(cheapest_flight_finder.browsereturnQuotes, source, destination, single_date, return_date, max_budget)
