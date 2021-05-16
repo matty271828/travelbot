@@ -5,4 +5,4 @@ The core code of this programme is taken from the following example usage of the
 
 The core code includes the API contact and interpration of the JSON response, as well as use of threading in python to speed up run time. 
 
-I then took a different route than the tutorial in the implementation of a trip planner. I have developed my own algorithm and automated running of the programme to search for cheap flights thorughout the year and send automated emails with good offers. (Please not development is still ongoing as of time of writing of this document).
+I then took a different route than the tutorial in the implementation of a trip planner. I have developed my own algorithm and automated running of the programme to search for cheap flights thorughout the year and send automated emails with good offers. (Please note development is still ongoing as of time of writing of this document).
