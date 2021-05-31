@@ -74,6 +74,7 @@ def search_30dayreturn(source_array, destination_array, source_begin_date, sourc
 def search_oneyearreturn(source_array, destination_array, max_budget):
     """Function to loop 30 day search over a one year period starting from today"""
     # Dates
+<<<<<<< HEAD
     source_begin_date = pd.date.today()
     source_end_date = source_begin_date + datetime.timedelta(days=1)
 
@@ -83,4 +84,30 @@ def search_oneyearreturn(source_array, destination_array, max_budget):
     # For cheapest one way flights, run 30 day search to get best return journeys
 
     
+=======
+    source_begin_date = date.today()
+
+    # Populate list of start dates
+    start_dates = []
+    days_remaining = 365
+    while days_remaining > 30:
+        start_dates.append(source_begin_date)
+        source_begin_date = source_begin_date + datetime.timedelta(days=30)
+        days_remaining = days_remaining - 30
+
+    # Initialise month count
+    month_count = 1
+
+    # Loop through 30 day periods
+    for i in start_dates:
+        # print message
+        print(f"...Searching month {month_count}...starting date {i}")
+
+        # Run 30 day search function
+        source_end_date = i + datetime.timedelta(days=30)
+        search_30dayreturn(source_array, destination_array, i, source_end_date, max_budget)
+
+        # Add to month count
+        month_count = month_count + 1
+>>>>>>> 2440315c307f7b0cf560fd5b836f0c783ecce7f2
         
