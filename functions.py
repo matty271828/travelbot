@@ -34,7 +34,7 @@ def search_oneway(source_array, destination_array, source_begin_date, source_end
     daterange_source = pd.date_range(source_begin_date, source_end_date)
 
     # Contact API for cheapest one way flights
-    with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=16) as executor:
         for single_date in daterange_source:
             for destination in destination_array:
                 for source in source_array:
