@@ -16,7 +16,7 @@ source_begin_date = pd.to_datetime("2021-09-05")
 source_end_date =  pd.to_datetime("2021-09-07")
 
 # Define max budget, enter as None if not wanted
-max_budget = None
+max_budget = 400
 
 # time request
 total_compute_time = 0.0
@@ -25,7 +25,7 @@ total_request_time = 0.0
 # Start timer
 function_start = time.time()
 
-search_oneway(source_array, destination_array, source_begin_date, source_end_date)
+search_oneway(source_array, destination_array, source_begin_date, source_end_date, max_budget)
 
 # search_30dayreturn(source_array, destination_array, source_begin_date, source_end_date, max_budget)
 

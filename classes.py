@@ -33,7 +33,7 @@ class finder:
         self.session.headers.update(self.headers)
         return self.session
         
-    def browseonewayQuotes(self, source, destination, outdate):
+    def browseonewayQuotes(self, source, destination, outdate, max_budget):
         self.trip_type = "oneway"
         quoteRequestPath = "/apiservices/browsequotes/v1.0/"
         browseonewayQuotesURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + source + "/" + destination + "/" + outdate.strftime("%Y-%m-%d")
@@ -47,7 +47,8 @@ class finder:
             status = response.status_code
             print(f'{status}: {skyscanner_response_codes[status]}')
 
-        self.printResult(resultJSON, outdate, None, None)
+        # Pass info to print, 'None' given for return date
+        self.printResult(resultJSON, outdate, None, max_budget)
 
     def browsereturnQuotes(self, source, destination, outdate, indate, max_budget):
         self.trip_type = "return"
@@ -71,7 +72,7 @@ class finder:
         if("Quotes" in resultJSON):
             for Places in resultJSON["Places"]:
                 self.airports[Places["PlaceId"]] = Places["Name"] 
-                
+
             for Quotes in resultJSON["Quotes"]:
                 # Check flight within budget
                 if (max_budget == None):
