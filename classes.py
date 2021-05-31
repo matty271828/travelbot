@@ -37,11 +37,18 @@ class finder:
         self.trip_type = "oneway"
         quoteRequestPath = "/apiservices/browsequotes/v1.0/"
         browseonewayQuotesURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + source + "/" + destination + "/" + outdate.strftime("%Y-%m-%d")
+
         # Use the same session to request again and again
         response = self.session.get(browseonewayQuotesURL)
         resultJSON = json.loads(response.text)
-        self.printResult(resultJSON, outdate, None)
-        
+
+        # Check for good responses and print status code if unsuccessful
+        if("Quotes" not in resultJSON):
+            status = response.status_code
+            print(f'{status}: {skyscanner_response_codes[status]}')
+
+        self.printResult(resultJSON, outdate, None, None)
+
     def browsereturnQuotes(self, source, destination, outdate, indate, max_budget):
         self.trip_type = "return"
         quoteRequestPath = "/apiservices/browsequotes/v1.0/"
@@ -56,11 +63,6 @@ class finder:
             status = response.status_code
             print(f'{status}: {skyscanner_response_codes[status]}')
 
-        #Check for API limit rate exceeded
-        #if (status == 429):
-        #    print(f".....Sleeping for 1 minute......\n")
-        #    sleep(60)
-
         self.printResult(resultJSON, outdate, indate, max_budget)
         
     # A bit more elegant print
@@ -69,6 +71,7 @@ class finder:
         if("Quotes" in resultJSON):
             for Places in resultJSON["Places"]:
                 self.airports[Places["PlaceId"]] = Places["Name"] 
+                
             for Quotes in resultJSON["Quotes"]:
                 # Check flight within budget
                 if (max_budget == None):
