@@ -15,7 +15,6 @@ skyscanner_response_codes = {
 }
 
 class finder:
-    
     def __init__(self, originCountry = "UK", currency = "GBP", locale = "en", rootURL="https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"):
         self.currency = currency
         self.locale =  locale

@@ -8,7 +8,7 @@ import psycopg2.extras as ext
 ENV = 'dev'
 # Run local database
 if ENV == 'dev':
-    DATABASE_URL = os.environ.get('local_database_url')
+    DATABASE_URL = os.environ.get('travelbot_local_database_url')
 # Run production database
 else:
     DATABASE_URL = os.environ.get('DATABASE_URL')
