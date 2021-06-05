@@ -17,20 +17,20 @@ IATA_Codes = {"AL","DZ","AS","AD","AO","AI","AG","AR","AM","AW","AU","AT","AZ","
             "NC","NZ","NI","NE","NG","NO","OM","PK","PW","PA","PG","PY","PE","PH","PL","PT","US","QA","RE",
             "RO","RU","RW","MP","SM","SA","SN","SC","SL","SG","SK","SI","ZA","KR","ES","LK","KN","LC","VC",
             "SR","SZ","SE","CH","SY","TW","TZ","TH","TG","TT","TN","TR","TM","TC","AE","VI","US","UG","UA",
-            "GB","UY","UZ","VU","VA","VE","VN","WF","YE","ZM","ZW"}
+            "UK","UY","UZ","VU","VA","VE","VN","WF","YE","ZM","ZW"}
 
 
 # Airports where we can fly from
 source_array = {"UK-sky"} 
 # Our destination airports
-destination_array = {"IL-sky"}
+destination_array = {"anywhere"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-05")
 source_end_date =  pd.to_datetime("2021-10-07")
 
 # Define max budget, enter as None if not wanted
-max_budget = None
+max_budget = 150
 
 # time request
 total_compute_time = 0.0
