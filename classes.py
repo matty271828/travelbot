@@ -1,6 +1,8 @@
 import requests, datetime, json
 from time import sleep
 
+from run_sql import run_sql
+
 # Skyscanner response code dictionary
 skyscanner_response_codes = {
                                 200:"Success", 
@@ -84,8 +86,18 @@ class finder:
                     source = Quotes["OutboundLeg"]["OriginId"]
                     dest = Quotes["OutboundLeg"]["DestinationId"]
                     print(outdate.strftime("%d-%b %a") + " - " + indate.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s GBP" %Quotes["MinPrice"])
+                
                 # one way trip
                 else:
+                    # Retrieve trip info
                     source = Quotes["OutboundLeg"]["OriginId"]
                     dest = Quotes["OutboundLeg"]["DestinationId"]
+                    price = Quotes["MinPrice"]
+
+                    # Add trip info to SQL database
+                    sql = "INSERT INTO onewayflights (source, dest, price, outdate) VALUES (%s,%s,%s,%s)"
+                    values = [source, dest, price, outdate]
+                    results = run_sql(sql, values)
+
+                    # Print trip info
                     print(outdate.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s GBP" %Quotes["MinPrice"])
