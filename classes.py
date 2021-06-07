@@ -96,7 +96,7 @@ class finder:
 
                     # Add trip info to SQL database
                     sql = "INSERT INTO onewayflights (source, dest, price, outdate) VALUES (%s,%s,%s,%s)"
-                    values = [source, dest, price, outdate]
+                    values = [self.airports[source], self.airports[dest], price, outdate]
                     results = run_sql(sql, values)
 
                     # Print trip info
