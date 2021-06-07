@@ -5,6 +5,7 @@ import time, datetime, dateutil
 import pandas as pd
 
 from functions import search_oneway, search_30dayreturn
+from run_sql import run_sql
 
 # IATA country codes
 IATA_Codes = {"AL","DZ","AS","AD","AO","AI","AG","AR","AM","AW","AU","AT","AZ","BS","BH","BD","BB","BY",
@@ -23,14 +24,14 @@ IATA_Codes = {"AL","DZ","AS","AD","AO","AI","AG","AR","AM","AW","AU","AT","AZ","
 # Airports where we can fly from
 source_array = {"UK-sky"} 
 # Our destination airports
-destination_array = {"anywhere"}
+destination_array = {"US-sky"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-05")
 source_end_date =  pd.to_datetime("2021-10-07")
 
 # Define max budget, enter as None if not wanted
-max_budget = 150
+max_budget = 250
 
 # time request
 total_compute_time = 0.0
@@ -38,6 +39,10 @@ total_request_time = 0.0
 
 # Start timer
 function_start = time.time()
+
+# Clear DB
+sql = "DELETE FROM onewayflights"
+run_sql = run_sql(sql)
 
 search_oneway(source_array, destination_array, source_begin_date, source_end_date, max_budget)
 
