@@ -41,9 +41,9 @@ def search_oneway(source_array, destination_array, source_begin_date, source_end
                 for source in source_array:
                     executor.submit(cheapest_flight_finder.browseonewayQuotes,source, destination, single_date, max_budget)
 
-def search_onemonthreturn(source_array, destination_array, source_begin_date, source_end_date, max_budget):
+def search_30dayoutward(source_array, destination_array, source_begin_date, source_end_date, max_budget):
     '''Function to take one way flight data and find best return deals for each destination'''
-    # Conduct a one way search
+    # Conduct a one way search, finding cheapest one way flights within date span
     search_oneway(source_array, destination_array, source_begin_date, source_end_date, max_budget)
 
     # List to store outward flights
@@ -65,7 +65,7 @@ def search_onemonthreturn(source_array, destination_array, source_begin_date, so
         flight_details = {"source":cheapest_flight[0][0],"dest":cheapest_flight[0][1],
         "price":cheapest_flight[0][2],"date":cheapest_flight[0][3]}
 
-        # Append to outward flights list
+        # append to outward flights list
         outward_flights.append(flight_details)
 
     # For each outward flight, run search_30day return and save 
