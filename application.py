@@ -4,7 +4,7 @@ import os
 import time, datetime, dateutil
 import pandas as pd
 
-from functions import search_oneway, search_30dayreturn
+from functions import search_oneway, search_onemonthreturn
 from run_sql import run_sql
 
 # IATA country codes
@@ -22,9 +22,9 @@ IATA_Codes = {"AL","DZ","AS","AD","AO","AI","AG","AR","AM","AW","AU","AT","AZ","
 
 
 # Airports where we can fly from
-source_array = {"UK-sky"} 
+source_array = {"MAN-sky"} 
 # Our destination airports
-destination_array = {"anywhere"}
+destination_array = {"US-sky"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-05")
@@ -44,9 +44,7 @@ function_start = time.time()
 sql = "DELETE FROM onewayflights"
 run_sql = run_sql(sql)
 
-search_oneway(source_array, destination_array, source_begin_date, source_end_date, max_budget)
-
-# search_30dayreturn(source_array, destination_array, source_begin_date, source_end_date, max_budget)
+search_onemonthreturn(source_array, destination_array, source_begin_date, source_end_date, max_budget)
 
 # Stats on runtime
 print("\nBenchmark Stats :")

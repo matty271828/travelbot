@@ -1,4 +1,5 @@
 import os
+from run_sql import run_sql
 from numpy.lib.utils import source
 import pandas as pd
 import concurrent.futures, threading
@@ -39,6 +40,37 @@ def search_oneway(source_array, destination_array, source_begin_date, source_end
             for destination in destination_array:
                 for source in source_array:
                     executor.submit(cheapest_flight_finder.browseonewayQuotes,source, destination, single_date, max_budget)
+
+def search_onemonthreturn(source_array, destination_array, source_begin_date, source_end_date, max_budget):
+    '''Function to take one way flight data and find best return deals for each destination'''
+    # Conduct a one way search
+    search_oneway(source_array, destination_array, source_begin_date, source_end_date, max_budget)
+
+    # List to store outward flights
+    outward_flights = []
+
+    # Access DB and add cheapest outward flight for each dest. airport to dictionary
+    # Retrieve list of unique destination airport names
+    sql = "SELECT DISTINCT dest FROM onewayflights"
+    distinct_destinations = run_sql(sql)
+
+    # For each distinct destination, added details of cheapest flight to outward_flights
+    for i in range(0, len(distinct_destinations)):
+        # Find cheapest flight for each destination
+        sql = "SELECT source, dest, price, outdate FROM onewayflights WHERE dest = (%s) ORDER BY price ASC LIMIT 1"
+        values = [distinct_destinations[i][0]]
+        cheapest_flight = run_sql(sql, values)
+
+        # reformat cheapest_flight as a dictionary
+        flight_details = {"source":cheapest_flight[0][0],"dest":cheapest_flight[0][1],
+        "price":cheapest_flight[0][2],"date":cheapest_flight[0][3]}
+
+        # Append to outward flights list
+        outward_flights.append(flight_details)
+
+    # For each outward flight, run search_30day return and save 
+    for i in range(0, len(outward_flights)):
+        print(outward_flights[i])
 
 def search_30dayreturn(source_array, destination_array, source_begin_date, source_end_date, max_budget):
     """Function to search for return flights between two destinations"""
