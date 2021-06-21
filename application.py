@@ -28,10 +28,10 @@ destination_array = {"JFK-sky"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-05")
-source_end_date =  pd.to_datetime("2021-09-07")
+source_end_date =  pd.to_datetime("2021-10-07")
 
 # Define max budget, enter as None if not wanted
-max_budget = None
+max_budget = 250
 
 # time request
 total_compute_time = 0.0
@@ -44,7 +44,7 @@ function_start = time.time()
 sql = "DELETE FROM onewayflights"
 run_sql = run_sql(sql)
 
-search_specificreturn(source_array, destination_array, source_begin_date, source_end_date, max_budget)
+search_30dayoutward(source_array, destination_array, source_begin_date, source_end_date, max_budget)
 
 # Stats on runtime
 print("\nBenchmark Stats :")

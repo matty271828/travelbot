@@ -55,8 +55,6 @@ class finder:
         self.trip_type = "return"
         quoteRequestPath = "/apiservices/browsequotes/v1.0/"
 
-        print('test')
-
         browsereturnQuotesURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + source + "/" + destination + "/" + outdate.strftime("%Y-%m-%d") + "/" + indate.strftime("%Y-%m-%d")
         # Use the same session to request again and again
         response = self.session.get(browsereturnQuotesURL)
@@ -97,8 +95,8 @@ class finder:
                     price = Quotes["MinPrice"]
 
                     # Add trip info to SQL database
-                    sql = "INSERT INTO onewayflights (source, dest, price, outdate) VALUES (%s,%s,%s,%s)"
-                    values = [self.airports[source], self.airports[dest], price, outdate]
+                    sql = "INSERT INTO onewayflights (origin_id, source, destination_id, dest, price, outdate) VALUES (%s,%s,%s,%s,%s,%s)"
+                    values = [source, self.airports[source], dest, self.airports[dest], price, outdate]
                     results = run_sql(sql, values)
 
                     # Print trip info
