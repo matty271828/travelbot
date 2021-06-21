@@ -13,7 +13,7 @@ This page handles functions for different flight formats. Edit the number of wor
 A rate limit > 500 contacts/s will result in a response error and induce a 1 minute timeout. 
 '''
 
-show_testcode = 'yes'
+show_testcode = 'no'
 
 # Retrieve API key
 api_key = os.environ.get("SKYSCANNER_API_KEY")
@@ -63,14 +63,24 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
 
         # reformat cheapest_flight as a dictionary
         flight_details = {"source":cheapest_flight[0][0],"dest":cheapest_flight[0][1],
-        "price":cheapest_flight[0][2],"date":cheapest_flight[0][3]}
+        "price":cheapest_flight[0][2],"outdate":cheapest_flight[0][3]}
 
         # append to outward flights list
         outward_flights.append(flight_details)
 
-    # For each outward flight, run search_30day return and save 
+    # For each outward flight, run search_return and save 
     for i in range(0, len(outward_flights)):
         print(outward_flights[i])
+
+def search_specificreturn(source, destination, out_date, return_date, max_budget):
+    '''Function to retrieve cheapest return flights between two specific destinations on a specific start and end date'''
+    # Contact API for cheapest one way flights
+    
+    source = "MAN-sky"
+    destination = "JFK-sky"
+
+    cheapest_flight_finder.browsereturnQuotes(source, destination, out_date, return_date, max_budget)
+    
 
 def search_30dayreturn(source_array, destination_array, source_begin_date, source_end_date, max_budget):
     """Function to search for return flights between two destinations"""
@@ -78,7 +88,7 @@ def search_30dayreturn(source_array, destination_array, source_begin_date, sourc
     daterange_source = pd.date_range(source_begin_date, source_end_date)
 
     # Contact API for cheapest one way flights
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
         for single_date in daterange_source:
             # Adjust sleep variable to slow down programme and avoid breaking API limit
             if show_testcode == 'yes':

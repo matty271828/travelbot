@@ -55,11 +55,13 @@ class finder:
         self.trip_type = "return"
         quoteRequestPath = "/apiservices/browsequotes/v1.0/"
 
+        print('test')
+
         browsereturnQuotesURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + source + "/" + destination + "/" + outdate.strftime("%Y-%m-%d") + "/" + indate.strftime("%Y-%m-%d")
         # Use the same session to request again and again
         response = self.session.get(browsereturnQuotesURL)
         resultJSON = json.loads(response.text)
-        
+
         # Check for good responses and print status code if unsuccessful
         if("Quotes" not in resultJSON):
             status = response.status_code
@@ -75,7 +77,7 @@ class finder:
                 self.airports[Places["PlaceId"]] = Places["Name"] 
 
             for Quotes in resultJSON["Quotes"]:
-                # Check flight within budget
+                # Check flight within budget, prevents out of budget flights printing/saving
                 if (max_budget == None):
                     pass
                 elif (Quotes["MinPrice"] > max_budget):
