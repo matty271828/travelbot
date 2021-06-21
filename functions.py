@@ -69,14 +69,30 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         # append to outward flights list
         outward_flights.append(flight_details)
 
-    # For each outward flight, run search_return and save 
+    # List to store return flights
+    return_flights = []
+
+    # For each outward flight, run return searches over the subsequent 30 days and save cheapest flight
     for i in range(0, len(outward_flights)):
+        # Configure return date
+        return_date = source_begin_date + datetime.timedelta(days=1)
+    
+        # Loop through 30 subsequent days from date of outward flight
+        for j in range (1, 30):
+            # Configure dates
+            return_date = source_begin_date + datetime.timedelta(days=j)
+
+            # Contact API for cheapest return flights
+            #cheapest_flight_finder.browsereturnQuotes(outward_flights[i]["origin_id"], outward_flights[i]["destination_id"], source_begin_date, return_date, max_budget)
+
+            # Compare to cheapest and save if cheaper
+
+        # Add cheapest to return flights array
         print(outward_flights[i])
 
 def search_specificreturn(source, destination, out_date, return_date, max_budget):
-    '''Function to retrieve cheapest return flights between two specific destinations on a specific start 
-    and end date'''
-    # Contact API for cheapest one way flights
+    '''Function to retrieve cheapest return flights between two specific destinations on a specific start and end date'''
+    # Contact API for cheapest return flights
     
     source = "MAN-sky"
     destination = "JFK-sky"

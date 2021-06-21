@@ -83,8 +83,17 @@ class finder:
 
                 # return trip
                 if self.trip_type == "return":
+                    # Retrieve trip info
                     source = Quotes["OutboundLeg"]["OriginId"]
                     dest = Quotes["OutboundLeg"]["DestinationId"]
+                    price = Quotes["MinPrice"]
+
+                    # Add trip info to SQL database
+                    sql = "INSERT INTO return_flights (origin_id, source, destination_id, dest, price, outdate, indate) VALUES (%s,%s,%s,%s,%s,%s,%s)"
+                    values = [source, self.airports[source], dest, self.airports[dest], price, outdate, indate]
+                    results = run_sql(sql, values)
+
+                    # Print trip info
                     print(outdate.strftime("%d-%b %a") + " - " + indate.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s GBP" %Quotes["MinPrice"])
                 
                 # one way trip
@@ -101,3 +110,4 @@ class finder:
 
                     # Print trip info
                     print(outdate.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s GBP" %Quotes["MinPrice"])
+
