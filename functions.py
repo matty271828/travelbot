@@ -57,13 +57,14 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
     # For each distinct destination, added details of cheapest flight to outward_flights
     for i in range(0, len(distinct_destinations)):
         # Find cheapest flight for each destination
-        sql = "SELECT source, dest, price, outdate FROM onewayflights WHERE dest = (%s) ORDER BY price ASC LIMIT 1"
+        sql = "SELECT origin_id, source, destination_id, dest, price, outdate FROM onewayflights WHERE dest = (%s) ORDER BY price ASC LIMIT 1"
         values = [distinct_destinations[i][0]]
         cheapest_flight = run_sql(sql, values)
 
         # reformat cheapest_flight as a dictionary
-        flight_details = {"source":cheapest_flight[0][0],"dest":cheapest_flight[0][1],
-        "price":cheapest_flight[0][2],"outdate":cheapest_flight[0][3]}
+        flight_details = {"origin_id":cheapest_flight[0][0],"source":cheapest_flight[0][1],
+        "destination_id":cheapest_flight[0][2],"dest":cheapest_flight[0][3],"price":cheapest_flight[0][4],
+        "outdate":cheapest_flight[0][5]}
 
         # append to outward flights list
         outward_flights.append(flight_details)
@@ -73,7 +74,8 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         print(outward_flights[i])
 
 def search_specificreturn(source, destination, out_date, return_date, max_budget):
-    '''Function to retrieve cheapest return flights between two specific destinations on a specific start and end date'''
+    '''Function to retrieve cheapest return flights between two specific destinations on a specific start 
+    and end date'''
     # Contact API for cheapest one way flights
     
     source = "MAN-sky"
