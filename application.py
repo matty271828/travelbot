@@ -28,7 +28,7 @@ destination_array = {"anywhere"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-05")
-source_end_date =  pd.to_datetime("2021-09-07")
+source_end_date =  pd.to_datetime("2021-09-15")
 
 # Define max budget, enter as None if not wanted
 max_budget = None
@@ -40,9 +40,12 @@ total_request_time = 0.0
 # Start timer
 function_start = time.time()
 
-# Clear DB
+# Clear all tables
+sql = "DELETE FROM return_flights"
+clear_return_flights = run_sql(sql)
+
 sql = "DELETE FROM onewayflights"
-run_sql = run_sql(sql)
+clear_onewayflights = run_sql(sql)
 
 search_specificreturn(source_array, destination_array, source_begin_date, source_end_date, max_budget)
 

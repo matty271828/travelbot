@@ -83,7 +83,7 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
             return_date = source_begin_date + datetime.timedelta(days=j)
 
             # Contact API for cheapest return flights
-            #cheapest_flight_finder.browsereturnQuotes(outward_flights[i]["origin_id"], outward_flights[i]["destination_id"], source_begin_date, return_date, max_budget)
+            cheapest_flight_finder.browsereturnQuotes(outward_flights[i]["origin_id"], outward_flights[i]["destination_id"], source_begin_date, return_date, max_budget)
 
             # Compare to cheapest and save if cheaper
 
@@ -94,7 +94,7 @@ def search_specificreturn(source, destination, out_date, return_date, max_budget
     '''Function to retrieve cheapest return flights between two specific destinations on a specific start and end date'''
     # Contact API for cheapest return flights
     
-    source = "MAN-sky"
+    source = "LHR-sky"
     destination = "JFK-sky"
 
     cheapest_flight_finder.browsereturnQuotes(source, destination, out_date, return_date, max_budget)
