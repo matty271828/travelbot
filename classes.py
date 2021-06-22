@@ -23,6 +23,7 @@ class finder:
         self.rootURL = rootURL
         self.originCountry = originCountry
         self.airports = {}
+        self.skyscannercodes = {}
         
     def setHeaders(self, headers):
         self.headers =  headers
@@ -72,7 +73,8 @@ class finder:
         # Check for response
         if("Quotes" in resultJSON):
             for Places in resultJSON["Places"]:
-                self.airports[Places["PlaceId"]] = Places["Name"] 
+                self.airports[Places["PlaceId"]] = Places["Name"]
+                self.skyscannercodes[Places["PlaceId"]] = Places["SkyscannerCode"] 
 
             for Quotes in resultJSON["Quotes"]:
                 # Check flight within budget, prevents out of budget flights printing/saving
@@ -90,7 +92,7 @@ class finder:
 
                     # Add trip info to SQL database
                     sql = "INSERT INTO return_flights (origin_id, source, destination_id, dest, price, outdate, indate) VALUES (%s,%s,%s,%s,%s,%s,%s)"
-                    values = [source, self.airports[source], dest, self.airports[dest], price, outdate, indate]
+                    values = [self.skyscannercodes[source], self.airports[source], self.skyscannercodes[dest], self.airports[dest], price, outdate, indate]
                     results = run_sql(sql, values)
 
                     # Print trip info
@@ -105,7 +107,7 @@ class finder:
 
                     # Add trip info to SQL database
                     sql = "INSERT INTO onewayflights (origin_id, source, destination_id, dest, price, outdate) VALUES (%s,%s,%s,%s,%s,%s)"
-                    values = [source, self.airports[source], dest, self.airports[dest], price, outdate]
+                    values = [self.skyscannercodes[source], self.airports[source], self.skyscannercodes[dest], self.airports[dest], price, outdate]
                     results = run_sql(sql, values)
 
                     # Print trip info

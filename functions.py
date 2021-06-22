@@ -94,7 +94,7 @@ def search_specificreturn(source, destination, out_date, return_date, max_budget
     '''Function to retrieve cheapest return flights between two specific destinations on a specific start and end date'''
     # Contact API for cheapest return flights
     
-    source = "LHR-sky"
+    source = "MAN-sky"
     destination = "JFK-sky"
 
     cheapest_flight_finder.browsereturnQuotes(source, destination, out_date, return_date, max_budget)
