@@ -73,12 +73,13 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
     return_flights = []
 
     # For each outward flight, run return searches over the subsequent 30 days and save cheapest flight
-    for i in range(0, 5):
+    # Adjust this range to run return searches on more outward journeys
+    for i in range(0, 2):
         print(outward_flights[i])
 
         # Clear return_flights DB table
-        # sql = "DELETE FROM return_flights"
-        # clear_return_flights = run_sql(sql)
+        sql = "DELETE FROM return_flights"
+        clear_return_flights = run_sql(sql)
     
         # Configure initial return date & cheapest flight
         return_date = source_begin_date + datetime.timedelta(days=1)
