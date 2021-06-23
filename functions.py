@@ -73,29 +73,41 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
     return_flights = []
 
     # For each outward flight, run return searches over the subsequent 30 days and save cheapest flight
-    for i in range(0, len(outward_flights)):
-        # Configure return date
-        return_date = source_begin_date + datetime.timedelta(days=1)
+    for i in range(0, 5):
+        print(outward_flights[i])
+
+        # Clear return_flights DB table
+        # sql = "DELETE FROM return_flights"
+        # clear_return_flights = run_sql(sql)
     
+        # Configure initial return date & cheapest flight
+        return_date = source_begin_date + datetime.timedelta(days=1)
+
         # Loop through 30 subsequent days from date of outward flight
         for j in range (1, 30):
             # Configure dates
             return_date = source_begin_date + datetime.timedelta(days=j)
 
-            # Contact API for cheapest return flights
+            # Contact API for cheapest return flights (this will insert into return_flights table in DB)
             cheapest_flight_finder.browsereturnQuotes(outward_flights[i]["origin_id"], outward_flights[i]["destination_id"], source_begin_date, return_date, max_budget)
 
-            # Compare to cheapest and save if cheaper
+        # Retrieve cheapest flight inserted into DB
+        sql = "SELECT origin_id, source, destination_id, dest, price, outdate, indate FROM return_flights ORDER BY price ASC LIMIT 1"
+        cheapest_flight = run_sql(sql)
+
+        print('test1')
+        print(cheapest_flight)
 
         # Add cheapest to return flights array
-        print(outward_flights[i])
+        return_flights.append(cheapest_flight)
+    
+    print('test2')
+    print(return_flights)
+
 
 def search_specificreturn(source, destination, out_date, return_date, max_budget):
     '''Function to retrieve cheapest return flights between two specific destinations on a specific start and end date'''
     # Contact API for cheapest return flights
-    
-    source = "MAN-sky"
-    destination = "JFK-sky"
 
     cheapest_flight_finder.browsereturnQuotes(source, destination, out_date, return_date, max_budget)
     
