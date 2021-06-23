@@ -31,7 +31,7 @@ source_begin_date = pd.to_datetime("2021-09-05")
 source_end_date =  pd.to_datetime("2021-09-15")
 
 # Define max budget, enter as None if not wanted
-max_budget = 150
+max_budget = 10
 
 # time request
 total_compute_time = 0.0

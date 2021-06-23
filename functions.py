@@ -75,6 +75,9 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
     # For each outward flight, run return searches over the subsequent 30 days and save cheapest flight
     # Adjust this range to run return searches on more outward journeys
     for i in range(0, 2):
+        # Start timer
+        subloop_start_time = time.time()
+
         print(outward_flights[i])
 
         # Clear return_flights DB table
@@ -90,9 +93,9 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
             return_date = source_begin_date + datetime.timedelta(days=j)
 
             # Contact API for cheapest return flights (this will insert into return_flights table in DB)
-            cheapest_flight_finder.browsereturnQuotes(outward_flights[i]["origin_id"], outward_flights[i]["destination_id"], source_begin_date, return_date, max_budget)
+            cheapest_flight_finder.browsereturnQuotes(outward_flights[i]["origin_id"], outward_flights[i]["destination_id"], source_begin_date, return_date, 50)
 
-        # Retrieve cheapest flight inserted into DB
+        # Retrieve cheapest flight inserted into DB (SQL query will find the cheapest, no comparison needed in loop)
         sql = "SELECT origin_id, source, destination_id, dest, price, outdate, indate FROM return_flights ORDER BY price ASC LIMIT 1"
         cheapest_flight = run_sql(sql)
 
@@ -101,8 +104,18 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
 
         # Add cheapest to return flights array
         return_flights.append(cheapest_flight)
+
+        # Throttle programme
+        print('sleeping')
+        sleep(60)
+
+        # Calculate time
+        completion_time = time.time() - subloop_start_time
+        print(f"subloop completed in {completion_time}s")
+
+        est_time_remaining = (len(outward_flights) - i)*completion_time
+        print(f"estimated time remaining: {est_time_remaining}s")
     
-    print('test2')
     print(return_flights)
 
 
