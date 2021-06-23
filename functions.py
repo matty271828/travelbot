@@ -73,8 +73,10 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
     return_flights = []
 
     # For each outward flight, run return searches over the subsequent 30 days and save cheapest flight
+    # Flight number limit, limits numbers of flights to run return search on in order to protect performance
+    flight_number_limit = 2
     # Adjust this range to run return searches on more outward journeys
-    for i in range(0, 2):
+    for i in range(0, flight_number_limit):
         # Start timer
         subloop_start_time = time.time()
 
@@ -101,6 +103,7 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
 
         print('test1')
         print(cheapest_flight)
+        print(" ")
 
         # Add cheapest to return flights array
         return_flights.append(cheapest_flight)
@@ -111,13 +114,12 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
 
         # Calculate time
         completion_time = time.time() - subloop_start_time
-        print(f"subloop completed in {completion_time}s")
+        print(f"subloop completed in {completion_time:.2f}s")
 
-        est_time_remaining = (len(outward_flights) - i)*completion_time
-        print(f"estimated time remaining: {est_time_remaining}s")
+        est_time_remaining = ((flight_number_limit - i)*completion_time)/60
+        print(f"estimated time remaining: {est_time_remaining:.2f}mins")
     
     print(return_flights)
-
 
 def search_specificreturn(source, destination, out_date, return_date, max_budget):
     '''Function to retrieve cheapest return flights between two specific destinations on a specific start and end date'''
