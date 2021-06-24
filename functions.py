@@ -74,9 +74,9 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
 
     # For each outward flight, run return searches over the subsequent 30 days and save cheapest flight
     # Flight number limit, limits numbers of flights to run return search on in order to protect performance
-    flight_number_limit = 2
+    flight_number_limit = len(outward_flights)
     # Adjust this range to run return searches on more outward journeys
-    for i in range(0, flight_number_limit):
+    for i in range(0, len(outward_flights)):
         # Start timer
         subloop_start_time = time.time()
 
@@ -87,15 +87,15 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         clear_return_flights = run_sql(sql)
     
         # Configure initial return date & cheapest flight
-        return_date = source_begin_date + datetime.timedelta(days=1)
+        out_date = outward_flights[i]["outdate"]
 
         # Loop through 30 subsequent days from date of outward flight
         for j in range (1, 30):
             # Configure dates
-            return_date = source_begin_date + datetime.timedelta(days=j)
+            return_date = out_date + datetime.timedelta(days=j)
 
             # Contact API for cheapest return flights (this will insert into return_flights table in DB)
-            cheapest_flight_finder.browsereturnQuotes(outward_flights[i]["origin_id"], outward_flights[i]["destination_id"], source_begin_date, return_date, 50)
+            cheapest_flight_finder.browsereturnQuotes(outward_flights[i]["origin_id"], outward_flights[i]["destination_id"], out_date, return_date, 50)
 
         # Retrieve cheapest flight inserted into DB (SQL query will find the cheapest, no comparison needed in loop)
         sql = "SELECT origin_id, source, destination_id, dest, price, outdate, indate FROM return_flights ORDER BY price ASC LIMIT 1"
