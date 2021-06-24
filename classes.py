@@ -66,6 +66,10 @@ class finder:
             status = response.status_code
             print(f'{status}: {skyscanner_response_codes[status]}')
 
+            if status == 429:
+                print('sleeping 1 min')
+                sleep(60)
+
         self.printResult(resultJSON, outdate, indate, max_budget)
         
     # A bit more elegant print
