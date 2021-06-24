@@ -94,7 +94,7 @@ class finder:
                     dest = Quotes["OutboundLeg"]["DestinationId"]
                     price = Quotes["MinPrice"]
 
-                    # Add trip info to SQL database
+                    # Add trip info to SQL database, functions can then query these results
                     sql = "INSERT INTO return_flights (origin_id, source, destination_id, dest, price, outdate, indate) VALUES (%s,%s,%s,%s,%s,%s,%s)"
                     values = [self.skyscannercodes[source], self.airports[source], self.skyscannercodes[dest], self.airports[dest], price, outdate, indate]
                     results = run_sql(sql, values)

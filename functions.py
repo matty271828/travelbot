@@ -71,6 +71,7 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
 
     # List to store return flights
     return_flights = []
+    max_total_price = 2.5*max_budget
 
     # For each outward flight, run return searches over the subsequent 30 days and save cheapest flight
     # Flight number limit, limits numbers of flights to run return search on in order to protect performance
@@ -90,12 +91,12 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         out_date = outward_flights[i]["outdate"]
 
         # Loop through 30 subsequent days from date of outward flight
-        for j in range (1, 30):
+        for j in range (1, 10):
             # Configure dates
             return_date = out_date + datetime.timedelta(days=j)
 
             # Contact API for cheapest return flights (this will insert into return_flights table in DB)
-            cheapest_flight_finder.browsereturnQuotes(outward_flights[i]["origin_id"], outward_flights[i]["destination_id"], out_date, return_date, 50)
+            cheapest_flight_finder.browsereturnQuotes(outward_flights[i]["origin_id"], outward_flights[i]["destination_id"], out_date, return_date, max_total_price)
 
             sleep(1)
 
@@ -103,23 +104,27 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         sql = "SELECT origin_id, source, destination_id, dest, price, outdate, indate FROM return_flights ORDER BY price ASC LIMIT 1"
         cheapest_flight = run_sql(sql)
 
-        print('test1')
+        # Output
         print(cheapest_flight)
-        print(" ")
 
         # Add cheapest to return flights array
         return_flights.append(cheapest_flight)
 
+        # SQL query to insert details of cheapest flight into DB
+        sql = "INSERT INTO best_flights (origin_id, source, destination_id, dest, price, outdate, indate) VALUES (%s,%s,%s,%s,%s,%s,%s)"
+        values = [cheapest_flight[0][0],cheapest_flight[0][1],cheapest_flight[0][2],cheapest_flight[0][3],cheapest_flight[0][4],cheapest_flight[0][5],cheapest_flight[0][6]]
+        results = run_sql(sql, values)
+
         # Throttle programme
-        print('sleeping')
-        #sleep(60)
+        # print('sleeping')
+        # sleep(60)
 
         # Calculate time
         completion_time = time.time() - subloop_start_time
         print(f"subloop completed in {completion_time:.2f}s")
 
         est_time_remaining = ((flight_number_limit - i)*completion_time)/60
-        print(f"estimated time remaining: {est_time_remaining:.2f}mins")
+        print(f"estimated time remaining: {est_time_remaining:.2f}mins\n")
     
     print(return_flights)
 

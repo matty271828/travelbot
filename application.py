@@ -22,16 +22,16 @@ IATA_Codes = {"AL","DZ","AS","AD","AO","AI","AG","AR","AM","AW","AU","AT","AZ","
 
 
 # Airports where we can fly from
-source_array = {"UK-sky"} 
+source_array = {"LPL-sky", "MAN-sky"} 
 # Our destination airports
-destination_array = {"anywhere"}
+destination_array = {"US-sky"}
 
 # Dates
-source_begin_date = pd.to_datetime("2021-09-05")
-source_end_date =  pd.to_datetime("2021-09-15")
+source_begin_date = pd.to_datetime("2021-09-01")
+source_end_date =  pd.to_datetime("2021-09-21")
 
 # Define max budget, enter as None if not wanted
-max_budget = 10
+max_budget = 150
 
 # time request
 total_compute_time = 0.0
