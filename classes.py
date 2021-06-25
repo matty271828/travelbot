@@ -71,6 +71,23 @@ class finder:
                 sleep(60)
 
         self.printResult(resultJSON, outdate, indate, max_budget)
+
+    def lookupPlaceInfo(self, skyscanner_code):
+        quoteRequestPath = "/apiservices/autosuggest/v1.0/"
+        lookupPlaceInfoURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + skyscanner_code + "-sky"
+
+        # Use the same session to request again and again
+        response = self.session.get(lookupPlaceInfoURL)
+        resultJSON = json.loads(response.text)
+
+        # Check for good responses and print status code if unsuccessful
+        if("Places" not in resultJSON):
+            status = response.status_code
+            print(f'{status}: {skyscanner_response_codes[status]}')
+
+            if status == 429:
+                print('sleeping 1 min')
+                sleep(60)
         
     # A bit more elegant print
     def printResult(self, resultJSON, outdate, indate, max_budget):
@@ -79,6 +96,7 @@ class finder:
             for Places in resultJSON["Places"]:
                 self.airports[Places["PlaceId"]] = Places["Name"]
                 self.skyscannercodes[Places["PlaceId"]] = Places["SkyscannerCode"] 
+                
 
             for Quotes in resultJSON["Quotes"]:
                 # Check flight within budget, prevents out of budget flights printing/saving

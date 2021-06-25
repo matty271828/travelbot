@@ -22,9 +22,9 @@ IATA_Codes = {"AL","DZ","AS","AD","AO","AI","AG","AR","AM","AW","AU","AT","AZ","
 
 
 # Airports where we can fly from
-source_array = {"LPL-sky", "MAN-sky"} 
+source_array = {"UK-sky"} 
 # Our destination airports
-destination_array = {"US-sky"}
+destination_array = {"everywhere"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-01")
