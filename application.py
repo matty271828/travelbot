@@ -4,7 +4,7 @@ import os
 import time, datetime, dateutil
 import pandas as pd
 
-from functions import search_30dayreturn, search_oneway, search_30dayoutward, search_specificreturn
+from functions import preprocess_places, search_30dayreturn, search_oneway, search_30dayoutward, search_specificreturn
 from run_sql import run_sql
 
 # IATA country codes
@@ -22,16 +22,16 @@ IATA_Codes = {"AL","DZ","AS","AD","AO","AI","AG","AR","AM","AW","AU","AT","AZ","
 
 
 # Airports where we can fly from
-source_array = {"UK-sky"} 
+source_array = {"LPL-sky", "MAN-sky"} 
 # Our destination airports
 destination_array = {"everywhere"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-01")
-source_end_date =  pd.to_datetime("2021-09-21")
+source_end_date =  pd.to_datetime("2021-09-05")
 
 # Define max budget, enter as None if not wanted
-max_budget = 150
+max_budget = 20
 
 # time request
 total_compute_time = 0.0

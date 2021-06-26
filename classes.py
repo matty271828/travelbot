@@ -38,8 +38,8 @@ class finder:
     def browseonewayQuotes(self, source, destination, outdate, max_budget):
         self.trip_type = "oneway"
         quoteRequestPath = "/apiservices/browsequotes/v1.0/"
-        browseonewayQuotesURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + source + "/" + destination + "/" + outdate.strftime("%Y-%m-%d")
 
+        browseonewayQuotesURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + source + "/" + destination + "/" + outdate.strftime("%Y-%m-%d")
         # Use the same session to request again and again
         response = self.session.get(browseonewayQuotesURL)
         resultJSON = json.loads(response.text)
@@ -74,8 +74,8 @@ class finder:
 
     def lookupPlaceInfo(self, skyscanner_code):
         quoteRequestPath = "/apiservices/autosuggest/v1.0/"
-        lookupPlaceInfoURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + skyscanner_code + "-sky"
 
+        lookupPlaceInfoURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + skyscanner_code + "-sky"
         # Use the same session to request again and again
         response = self.session.get(lookupPlaceInfoURL)
         resultJSON = json.loads(response.text)
@@ -83,11 +83,17 @@ class finder:
         # Check for good responses and print status code if unsuccessful
         if("Places" not in resultJSON):
             status = response.status_code
-            print(f'{status}: {skyscanner_response_codes[status]}')
+            try:
+                print(f'{status}: {skyscanner_response_codes[status]}')
+            except:
+                print(status)
 
             if status == 429:
                 print('sleeping 1 min')
                 sleep(60)
+
+        else:
+            print("place lookup successful")
         
     # A bit more elegant print
     def printResult(self, resultJSON, outdate, indate, max_budget):
@@ -96,7 +102,6 @@ class finder:
             for Places in resultJSON["Places"]:
                 self.airports[Places["PlaceId"]] = Places["Name"]
                 self.skyscannercodes[Places["PlaceId"]] = Places["SkyscannerCode"] 
-                
 
             for Quotes in resultJSON["Quotes"]:
                 # Check flight within budget, prevents out of budget flights printing/saving
