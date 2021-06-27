@@ -1,5 +1,6 @@
 import requests, datetime, json
 from time import sleep
+import pycountry_convert as pc
 
 from run_sql import run_sql
 
@@ -95,8 +96,21 @@ class finder:
         else:
             # Submit country of origin to database
             for Places in resultJSON["Places"]:
-                sql = "INSERT INTO place_info (skyscanner_code, country) VALUES (%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
-                values = [skyscanner_code, Places["CountryName"]]
+                # Determine continent of origin
+                try:
+                    country_code = pc.country_name_to_country_alpha2(Places["CountryName"], cn_name_format="default")
+                    continent_name = pc.country_alpha2_to_continent_code(country_code)
+                
+                except:
+                    print(f'Invalid country name: {Places["CountryName"]}')
+                    # Continent has been left out here due to KeyError and needs to be manually inputted into DB
+                    sql = "INSERT INTO place_info (skyscanner_code, placename, country) VALUES (%s,%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
+                    values = [skyscanner_code, Places["PlaceName"], Places["CountryName"]]
+                    submitPlaceInfo = run_sql(sql, values)
+
+                # Insert location info for preprocessing and later use
+                sql = "INSERT INTO place_info (skyscanner_code, placename, country, continent) VALUES (%s,%s,%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
+                values = [skyscanner_code, Places["PlaceName"], Places["CountryName"], continent_name]
                 submitPlaceInfo = run_sql(sql, values)
 
     # A bit more elegant print
