@@ -75,7 +75,7 @@ class finder:
     def submitPlaceInfo(self, skyscanner_code):
         quoteRequestPath = "/apiservices/autosuggest/v1.0/"
 
-        submitPlaceInfoURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + "?query=" + skyscanner_code
+        submitPlaceInfoURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + "?query=" + skyscanner_code + "-sky"
         # Use the same session to request again and again
         response = self.session.get(submitPlaceInfoURL)
         resultJSON = json.loads(response.text)
@@ -84,7 +84,7 @@ class finder:
         if("Places" not in resultJSON):
             status = response.status_code
             try:
-                print(f'submitPlaceInfo failure: {status}: {skyscanner_response_codes[status]}')
+                print(f'submitPlaceInfo API contact failure: {status}: {skyscanner_response_codes[status]}')
             except:
                 print(status)
 
@@ -93,8 +93,12 @@ class finder:
                 sleep(60)
 
         else:
-            print("place lookup successful")
-        
+            # Submit country of origin to database
+            for Places in resultJSON["Places"]:
+                sql = "INSERT INTO place_info (skyscanner_code, country) VALUES (%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
+                values = [skyscanner_code, Places["CountryName"]]
+                submitPlaceInfo = run_sql(sql, values)
+
     # A bit more elegant print
     def printResult(self, resultJSON, outdate, indate, max_budget):
         # Check for response

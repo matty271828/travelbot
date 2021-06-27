@@ -47,6 +47,12 @@ clear_return_flights = run_sql(sql)
 sql = "DELETE FROM onewayflights"
 clear_onewayflights = run_sql(sql)
 
+sql = "DELETE FROM best_flights"
+clear_best_flights = run_sql(sql)
+
+sql = "DELETE FROM place_info"
+clear_place_info = run_sql(sql)
+
 search_30dayoutward(source_array, destination_array, source_begin_date, source_end_date, max_budget)
 
 # Stats on runtime
