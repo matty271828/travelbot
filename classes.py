@@ -72,12 +72,12 @@ class finder:
 
         self.printResult(resultJSON, outdate, indate, max_budget)
 
-    def lookupPlaceInfo(self, skyscanner_code):
+    def submitPlaceInfo(self, skyscanner_code):
         quoteRequestPath = "/apiservices/autosuggest/v1.0/"
 
-        lookupPlaceInfoURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + skyscanner_code + "-sky"
+        submitPlaceInfoURL = self.rootURL + quoteRequestPath + self.originCountry + "/" + self.currency + "/" + self.locale + "/" + "?query=" + skyscanner_code
         # Use the same session to request again and again
-        response = self.session.get(lookupPlaceInfoURL)
+        response = self.session.get(submitPlaceInfoURL)
         resultJSON = json.loads(response.text)
 
         # Check for good responses and print status code if unsuccessful

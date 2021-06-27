@@ -57,7 +57,8 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
     # For each distinct destination, added details of cheapest flight to outward_flights
     for i in range(0, len(distinct_destinations)):
         # Conduct preprocessing to add country of dest. to place_info DB table for later use
-        cheapest_flight_finder.lookupPlaceInfo(distinct_destinations[0][0])
+        skyscanner_code = distinct_destinations[i][0] + "-sky"
+        cheapest_flight_finder.submitPlaceInfo(skyscanner_code)
 
         # Find cheapest flight for each destination
         sql = "SELECT origin_id, source, destination_id, dest, price, outdate FROM onewayflights WHERE dest = (%s) ORDER BY price ASC LIMIT 1"
