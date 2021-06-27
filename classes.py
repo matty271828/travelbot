@@ -84,7 +84,7 @@ class finder:
         if("Places" not in resultJSON):
             status = response.status_code
             try:
-                print(f'{status}: {skyscanner_response_codes[status]}')
+                print(f'submitPlaceInfo failure: {status}: {skyscanner_response_codes[status]}')
             except:
                 print(status)
 
