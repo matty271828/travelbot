@@ -22,7 +22,7 @@ IATA_Codes = {"AL","DZ","AS","AD","AO","AI","AG","AR","AM","AW","AU","AT","AZ","
 
 
 # Airports where we can fly from
-source_array = {"LPL-sky", "MAN-sky"} 
+source_array = {"UK-sky"} 
 # Our destination airports
 destination_array = {"everywhere"}
 
@@ -31,7 +31,7 @@ source_begin_date = pd.to_datetime("2021-09-01")
 source_end_date =  pd.to_datetime("2021-09-05")
 
 # Define max budget, enter as None if not wanted
-max_budget = 20
+max_budget = None
 
 # time request
 total_compute_time = 0.0
@@ -50,8 +50,11 @@ clear_onewayflights = run_sql(sql)
 sql = "DELETE FROM best_flights"
 clear_best_flights = run_sql(sql)
 
-sql = "DELETE FROM place_info"
-clear_place_info = run_sql(sql)
+#sql = "DELETE FROM place_info"
+#clear_best_flights = run_sql(sql)
+
+#sql = "DELETE FROM place_info"
+#clear_place_info = run_sql(sql)
 
 search_30dayoutward(source_array, destination_array, source_begin_date, source_end_date, max_budget)
 

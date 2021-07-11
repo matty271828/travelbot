@@ -75,7 +75,10 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
 
     # List to store return flights
     return_flights = []
-    max_total_price = 2.5*max_budget
+    if max_budget == None:
+        max_total_price = None
+    else:
+        max_total_price = 2.5*max_budget
 
     # For each outward flight, run return searches over the subsequent 30 days and save cheapest flight
     # Flight number limit, limits numbers of flights to run return search on in order to protect performance
