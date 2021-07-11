@@ -102,16 +102,26 @@ class finder:
                     continent_name = pc.country_alpha2_to_continent_code(country_code)
 
                     # Insert location info for preprocessing and later use
-                    sql = "INSERT INTO place_info (skyscanner_code, placename, country, continent) VALUES (%s,%s,%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
-                    values = [skyscanner_code, Places["PlaceName"], Places["CountryName"], continent_name]
+                    #sql = "INSERT INTO place_info (skyscanner_code, placename, country, continent) VALUES (%s,%s,%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
+                    #values = [skyscanner_code, Places["PlaceName"], Places["CountryName"], continent_name]
+                    #submitPlaceInfo = run_sql(sql, values)
+
+                    # Insert location info for preprocessing and later use
+                    sql = "INSERT INTO countries_continents (country, continent) VALUES (%s,%s) ON CONFLICT (country) DO NOTHING"
+                    values = [Places["CountryName"], continent_name]
                     submitPlaceInfo = run_sql(sql, values)
                 
                 except:
                     # Continent has been left out here due to KeyError and needs to be manually inputted into DB
                     print(f'Invalid country name: {Places["CountryName"]}')
                     
-                    sql = "INSERT INTO place_info (skyscanner_code, placename, country, continent) VALUES (%s,%s,%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
-                    values = [skyscanner_code, Places["PlaceName"], Places["CountryName"], "unknown"]
+                    #sql = "INSERT INTO place_info (skyscanner_code, placename, country, continent) VALUES (%s,%s,%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
+                    #values = [skyscanner_code, Places["PlaceName"], Places["CountryName"], "unknown"]
+                    #submitPlaceInfo = run_sql(sql, values)
+
+                    # Insert location info for preprocessing and later use
+                    sql = "INSERT INTO countries_continents (country, continent) VALUES (%s,%s) ON CONFLICT (country) DO NOTHING"
+                    values = [Places["CountryName"], "UNKNOWN"]
                     submitPlaceInfo = run_sql(sql, values)
 
     # A bit more elegant print
