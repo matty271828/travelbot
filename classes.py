@@ -17,6 +17,8 @@ skyscanner_response_codes = {
                                 500:"Server Error – An internal server error has occurred which has been logged."
 }
 
+maxbudgetsbycontinent = {"EU":20,"NA":150,"SA":200,"AS":200,"OC":300,"AF":100}
+
 class finder:
     def __init__(self, originCountry = "UK", currency = "GBP", locale = "en", rootURL="https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"):
         # set parameters
@@ -148,6 +150,7 @@ class finder:
                     sql = "INSERT INTO place_info (skyscanner_code, placename, country, continent) VALUES (%s,%s,%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
                     values = [skyscanner_code, Places["PlaceName"], Places["CountryName"], continent_name]
                     submitPlaceInfo = run_sql(sql, values)
+<<<<<<< HEAD
                     print(f'Added to place_info: {skyscanner_code}, {Places["PlaceName"]}, {Places["CountryName"]}, {continent_name}')
                     
                 except:
@@ -157,6 +160,26 @@ class finder:
                     values = [skyscanner_code, Places["PlaceName"], Places["CountryName"], "Unknown"]
                     submitPlaceInfo = run_sql(sql, values)
                     print(f'Added to DB: {skyscanner_code}, {Places["PlaceName"]}, {Places["CountryName"]}, {continent_name}\n')
+=======
+
+                    # Insert location info for preprocessing and later use
+                    #sql = "INSERT INTO countries_continents (country, continent) VALUES (%s,%s) ON CONFLICT (country) DO NOTHING"
+                    #values = [Places["CountryName"], continent_name]
+                    #submitPlaceInfo = run_sql(sql, values)
+                
+                except:
+                    # Continent has been left out here due to KeyError and needs to be manually inputted into DB
+                    print(f'Invalid country name: {Places["CountryName"]}')
+                    
+                    sql = "INSERT INTO place_info (skyscanner_code, placename, country, continent) VALUES (%s,%s,%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
+                    values = [skyscanner_code, Places["PlaceName"], Places["CountryName"], "unknown"]
+                    submitPlaceInfo = run_sql(sql, values)
+
+                    # Insert location info for preprocessing and later use
+                    #sql = "INSERT INTO countries_continents (country, continent) VALUES (%s,%s) ON CONFLICT (country) DO NOTHING"
+                    #values = [Places["CountryName"], "UNKNOWN"]
+                    #submitPlaceInfo = run_sql(sql, values)
+>>>>>>> e2abec87ac461b098e4e4f700cff21bf2dc7ee87
 
     # A bit more elegant print
     def printResult(self, resultJSON, outdate, indate, max_budget):
