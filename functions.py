@@ -179,10 +179,10 @@ def process_places():
     # Retrieve one way flights found in this run from DB
     sql = "SELECT DISTINCT destination_id FROM onewayflights"
     unique_ids = run_sql(sql)
-    print(unique_ids)
 
     # Run method on each id to add unique airports to place_info table in DB
-    
+    for i in range(0, len(unique_ids)):
+        cheapest_flight_finder.submitPlaceInfo(unique_ids[i][0])
    
 def search_oneyearreturn(source_array, destination_array, max_budget):
     """Function to loop 30 day search over a one year period starting from today"""
