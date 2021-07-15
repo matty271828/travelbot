@@ -141,21 +141,28 @@ class finder:
         else:
             # Submit specific airport location info to database
             for Places in resultJSON["Places"]:
+                # Get values
+                airport = Places["PlaceName"]
+                country = Places["CountryName"]
+
                 # Determine continent of origin
                 try:
                     country_code = pc.country_name_to_country_alpha2(Places["CountryName"], cn_name_format="default")
                     continent_name = pc.country_alpha2_to_continent_code(country_code)
+                    airport = Places["PlaceName"]
 
                     # Insert location info for preprocessing and later use
                     sql = "INSERT INTO place_info (skyscanner_code, placename, country, continent) VALUES (%s,%s,%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
                     values = [skyscanner_code, Places["PlaceName"], Places["CountryName"], continent_name]
                     submitPlaceInfo = run_sql(sql, values)
+                    print(f"Added to DB: {skyscanner_code}: {airport}, {country}, {continent_name}")
                 
                 except:
                     # Continent has been left out here due to KeyError and needs to be manually inputted into DB
                     sql = "INSERT INTO place_info (skyscanner_code, placename, country, continent) VALUES (%s,%s,%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
                     values = [skyscanner_code, Places["PlaceName"], Places["CountryName"], "unknown"]
                     submitPlaceInfo = run_sql(sql, values)
+                    print(f"Added to DB: {skyscanner_code}: {airport}, {country}, {continent_name}")
 
     # A bit more elegant print
     def printResult(self, resultJSON, outdate, indate, max_budget):
