@@ -69,6 +69,10 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         # append to outward flights list
         outward_flights.append(flight_details)
 
+    print(f"\nonewayflight search finished.\n")
+    # Run function to add airports never before encountered to place_info DB
+    process_places()
+
     # List to store return flights
     return_flights = []
     max_total_price = 2.5*max_budget
@@ -167,10 +171,15 @@ def search_30dayreturn(source_array, destination_array, source_begin_date, sourc
                         return_date = single_date + datetime.timedelta(days=i) 
                         executor.submit(cheapest_flight_finder.browsereturnQuotes, source, destination, single_date, return_date, max_budget)
 
-def preprocess_places(skyscanner_code):
+def process_places():
     '''Function to fill a database table with info on places'''
-    # Run method to lookup place info
-    finder().lookupPlaceInfo(skyscanner_code)
+    # Retrieve one way flights found in this run from DB
+    sql = "SELECT DISTINCT destination_id FROM onewayflights"
+    unique_ids = run_sql(sql)
+    print(unique_ids)
+
+    # Run method on each id to add unique airports to place_info table in DB
+    
    
 def search_oneyearreturn(source_array, destination_array, max_budget):
     """Function to loop 30 day search over a one year period starting from today"""

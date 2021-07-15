@@ -4,7 +4,7 @@ import os
 import time, datetime, dateutil
 import pandas as pd
 
-from functions import preprocess_places, search_30dayreturn, search_oneway, search_30dayoutward, search_specificreturn
+from functions import process_places, search_30dayreturn, search_oneway, search_30dayoutward, search_specificreturn
 from run_sql import run_sql
 
 # IATA country codes
@@ -50,8 +50,8 @@ clear_onewayflights = run_sql(sql)
 sql = "DELETE FROM best_flights"
 clear_best_flights = run_sql(sql)
 
-sql = "DELETE FROM place_info"
-clear_place_info = run_sql(sql)
+#sql = "DELETE FROM place_info"
+#clear_place_info = run_sql(sql)
 
 search_30dayoutward(source_array, destination_array, source_begin_date, source_end_date, max_budget)
 

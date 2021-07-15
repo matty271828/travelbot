@@ -55,8 +55,6 @@ class finder:
             status = response.status_code
             print(f'{status}: {skyscanner_response_codes[status]}')
 
-        # Run submit_placeinfo to add airport info to DB, this info will be used to collect countries/continents
-
         # Submit to DB, 'None' given for return date
         self.DBsubmission(resultJSON, outdate, None)
 
