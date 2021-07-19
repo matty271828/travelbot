@@ -35,6 +35,7 @@ def run_sql(sql, values = None):
 
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
+        print(error.split())
         return 'error occurred'
         
     finally:
