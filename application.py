@@ -36,8 +36,8 @@ clear_onewayflights = run_sql(sql)
 sql = "DELETE FROM best_flights"
 clear_best_flights = run_sql(sql)
 
-sql = "DELETE FROM place_info"
-clear_place_info = run_sql(sql)
+#sql = "DELETE FROM place_info"
+#clear_place_info = run_sql(sql)
 
 #sql = "DELETE FROM countries_continents"
 #clear_place_info = run_sql(sql)
