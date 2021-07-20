@@ -14,7 +14,7 @@ destination_array = {"everywhere"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-01")
-source_end_date =  pd.to_datetime("2021-09-02")
+source_end_date =  pd.to_datetime("2021-12-02")
 
 # Define max budget, enter as None if not wanted
 max_budget = 20

@@ -70,8 +70,11 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         outward_flights.append(flight_details)
 
     print(f"\nonewayflight search finished.\n")
+
+    run_locationprocessing = 'yes'
     # Run function to add airports never before encountered to place_info DB
-    process_places()
+    if run_locationprocessing == 'yes':
+        process_places()
 
     # List to store return flights
     return_flights = []

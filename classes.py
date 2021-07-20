@@ -17,7 +17,7 @@ skyscanner_response_codes = {
                                 500:"Server Error – An internal server error has occurred which has been logged."
 }
 
-budgetscontinent = {"EU":20,"NA":150,"SA":200,"AS":200,"OC":300,"AF":100}
+budgets_by_continent = {"EU":20,"NA":150,"SA":200,"AS":200,"OC":300,"AF":100}
 
 class finder:
     def __init__(self, originCountry = "UK", currency = "GBP", locale = "en", rootURL="https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"):
@@ -44,6 +44,10 @@ class finder:
         return self.session
         
     def browseonewayQuotes(self, source, destination, outdate, max_budget):
+        '''
+        Method contacts API and retrieves JSON file of one way quotes between given locations and within dates.
+        JSON file is then to be reviewed and information submitted to DB using DBsubmission method. 
+        '''
         self.trip_type = "oneway"
         quoteRequestPath = "/apiservices/browsequotes/v1.0/"
 
@@ -57,11 +61,11 @@ class finder:
             status = response.status_code
             print(f'{status}: {skyscanner_response_codes[status]}')
 
-        # Submit to DB, 'None' given for return date
+        # Submit to DB, 'None' given for return date, this also handles printing
         self.DBsubmission(resultJSON, outdate, None)
 
         # Pass info to print, 'None' given for return date
-        self.printResult(resultJSON, outdate, None, max_budget)
+        # self.printResult(resultJSON, outdate, None, max_budget)
 
     def browsereturnQuotes(self, source, destination, outdate, indate, max_budget):
         self.trip_type = "return"
@@ -96,21 +100,40 @@ class finder:
                 dest = Quotes["OutboundLeg"]["DestinationId"]
                 price = Quotes["MinPrice"]
 
+                # Retrieve continent of destination and retrieve continental price limit
+                sql = "SELECT continent FROM place_info WHERE skyscanner_code = (%s)"
+                values = [self.skyscannercodes[source]]
+                destination_continent = run_sql(sql,values)
+                continental_budget = budgets_by_continent[destination_continent[0][0]]
+
                 # return trip
                 if self.trip_type == "return":
-                    # Add trip info to SQL database, functions can then query these results
-                    sql = "INSERT INTO return_flights (origin_id, source, destination_id, dest, price, outdate, indate) VALUES (%s,%s,%s,%s,%s,%s,%s)"
-                    values = [self.skyscannercodes[source], self.airports[source], self.skyscannercodes[dest], self.airports[dest], price, outdate, indate]
-                    results = run_sql(sql, values)
+                    if price < (2*continental_budget):
+                        # Add trip info to SQL database, functions can then query these results
+                        sql = "INSERT INTO return_flights (origin_id, source, destination_id, dest, price, outdate, indate) VALUES (%s,%s,%s,%s,%s,%s,%s)"
+                        values = [self.skyscannercodes[source], self.airports[source], self.skyscannercodes[dest], self.airports[dest], price, outdate, indate]
+                        results = run_sql(sql, values)
+
+                        # Print trip info
+                        print(outdate.strftime("%d-%b %a") + " - " + indate.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s GBP" %Quotes["MinPrice"])
                 
                 # one way trip
                 else:
                     # Add trip info to SQL database
-                    sql = "INSERT INTO onewayflights (origin_id, source, destination_id, dest, price, outdate) VALUES (%s,%s,%s,%s,%s,%s)"
-                    values = [self.skyscannercodes[source], self.airports[source], self.skyscannercodes[dest], self.airports[dest], price, outdate]
-                    results = run_sql(sql, values)
+                    if price < continental_budget:
+                        sql = "INSERT INTO onewayflights (origin_id, source, destination_id, dest, price, outdate) VALUES (%s,%s,%s,%s,%s,%s)"
+                        values = [self.skyscannercodes[source], self.airports[source], self.skyscannercodes[dest], self.airports[dest], price, outdate]
+                        results = run_sql(sql, values)
+
+                        # Print trip info
+                        print(outdate.strftime("%d-%b %a") + " | " + "%s  --> %s"%(self.airports[source],self.airports[dest]) + " | " + "%s GBP" %Quotes["MinPrice"])
 
     def submitPlaceInfo(self, skyscanner_code):
+        '''
+        This method is exclusively used to submit location information to the DB table place_info. 
+        In turn this table is used to store info on what continents airports are located on. 
+        It is not intended to be ran every time the program is used.
+        '''
         quoteRequestPath = "/apiservices/autosuggest/v1.0/"
 
         # Use flag variable to register if airport already present in DB preprocessing
@@ -139,6 +162,10 @@ class finder:
                 sleep(60)
 
         else:
+            # Retrieve list of skyscanner codes already in DB
+            sql = "SELECT skyscanner_code FROM place_info"
+            existing_codes = run_sql(sql)
+
             # Submit specific airport location info to database
             for Places in resultJSON["Places"]:
                 # Get values
@@ -146,20 +173,27 @@ class finder:
                 country = Places["CountryName"]
                 skyscanner_code = Places["PlaceId"][:-4]
 
-                # Determine continent of origin
-                try:
-                    country_code = pc.country_name_to_country_alpha2(Places["CountryName"], cn_name_format="default")
-                    continent_name = pc.country_alpha2_to_continent_code(country_code)
-                except:
-                    continent_name = 'Unknown'
+                # check if skyscanner_code already in DB
+                code_present = 'no'
+                for i in range(0, len(existing_codes)):
+                    if existing_codes[i][0] == skyscanner_code:
+                        print(f'{skyscanner_code} already in DB')
+                        code_present = 'yes'
 
-                # Insert location info for preprocessing and later use
-                sql = "INSERT INTO place_info (skyscanner_code, placename, country, continent) VALUES (%s,%s,%s,%s) ON CONFLICT (skyscanner_code) DO NOTHING"
-                values = [skyscanner_code, Places["PlaceName"], Places["CountryName"], continent_name]
-                submitPlaceInfo = run_sql(sql, values)
-                print(f"Added to place_info: {skyscanner_code}: {airport}, {country}, {continent_name}")
+                if code_present == 'no':
+                    # Determine continent of origin
+                    try:
+                        country_code = pc.country_name_to_country_alpha2(Places["CountryName"], cn_name_format="default")
+                        continent_name = pc.country_alpha2_to_continent_code(country_code)
+                    except:
+                        continent_name = 'Unknown'
+
+                    # Insert location info for preprocessing and later use
+                    sql = "INSERT INTO place_info (skyscanner_code, placename, country, continent) VALUES (%s,%s,%s,%s)"
+                    values = [skyscanner_code, Places["PlaceName"], Places["CountryName"], continent_name]
+                    submitPlaceInfo = run_sql(sql, values)
+                    print(f"\nAdded to place_info: {skyscanner_code}: {airport}, {country}, {continent_name}\n")
             
-
     # A bit more elegant print
     def printResult(self, resultJSON, outdate, indate, max_budget):
         # Check for response
