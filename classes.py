@@ -43,7 +43,7 @@ class finder:
         self.session.headers.update(self.headers)
         return self.session
         
-    def browseonewayQuotes(self, source, destination, outdate, max_budget):
+    def browseonewayQuotes(self, source, destination, outdate):
         '''
         Method contacts API and retrieves JSON file of one way quotes between given locations and within dates.
         JSON file is then to be reviewed and information submitted to DB using DBsubmission method. 
@@ -65,9 +65,9 @@ class finder:
         self.DBsubmission(resultJSON, outdate, None)
 
         # Pass info to print, 'None' given for return date
-        # self.printResult(resultJSON, outdate, None, max_budget)
+        # self.printResult(resultJSON, outdate, None)
 
-    def browsereturnQuotes(self, source, destination, outdate, indate, max_budget):
+    def browsereturnQuotes(self, source, destination, outdate, indate):
         self.trip_type = "return"
         quoteRequestPath = "/apiservices/browsequotes/v1.0/"
 
@@ -85,7 +85,7 @@ class finder:
                 print('sleeping 1 min')
                 sleep(60)
 
-        self.printResult(resultJSON, outdate, indate, max_budget)
+        self.printResult(resultJSON, outdate, indate)
 
     def DBsubmission(self, resultJSON, outdate, indate):
         # Check for response
@@ -195,7 +195,7 @@ class finder:
                     print(f"\nAdded to place_info: {skyscanner_code}: {airport}, {country}, {continent_name}\n")
             
     # A bit more elegant print
-    def printResult(self, resultJSON, outdate, indate, max_budget):
+    def printResult(self, resultJSON, outdate, indate):
         # Check for response
         if("Quotes" in resultJSON):
             for Places in resultJSON["Places"]:

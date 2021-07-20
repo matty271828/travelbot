@@ -29,7 +29,7 @@ cheapest_flight_finder = finder()
 cheapest_flight_finder.setHeaders(headers)
 
 
-def search_oneway(source_array, destination_array, source_begin_date, source_end_date, max_budget):
+def search_oneway(source_array, destination_array, source_begin_date, source_end_date):
     """Function to search for one way flights between two destinations"""
     # Configure dates
     daterange_source = pd.date_range(source_begin_date, source_end_date)
@@ -39,12 +39,12 @@ def search_oneway(source_array, destination_array, source_begin_date, source_end
         for single_date in daterange_source:
             for destination in destination_array:
                 for source in source_array:
-                    executor.submit(cheapest_flight_finder.browseonewayQuotes,source, destination, single_date, max_budget)
+                    executor.submit(cheapest_flight_finder.browseonewayQuotes,source, destination, single_date)
 
-def search_30dayoutward(source_array, destination_array, source_begin_date, source_end_date, max_budget):
+def search_30dayoutward(source_array, destination_array, source_begin_date, source_end_date):
     '''Function to take one way flight data and find best return deals for each destination'''
     # Conduct a one way search, finding cheapest one way flights within date span
-    search_oneway(source_array, destination_array, source_begin_date, source_end_date, max_budget)
+    search_oneway(source_array, destination_array, source_begin_date, source_end_date)
 
     # List to store outward flights
     outward_flights = []
@@ -78,10 +78,6 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
 
     # List to store return flights
     return_flights = []
-    if max_budget == None:
-        max_total_price = None
-    else:
-        max_total_price = 2.5*max_budget
 
     # For each outward flight, run return searches over the subsequent 30 days and save cheapest flight
     # Flight number limit, limits numbers of flights to run return search on in order to protect performance
@@ -139,14 +135,14 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
     
     print(return_flights)
 
-def search_specificreturn(source, destination, out_date, return_date, max_budget):
+def search_specificreturn(source, destination, out_date, return_date):
     '''Function to retrieve cheapest return flights between two specific destinations on a specific start and end date'''
     # Contact API for cheapest return flights
 
-    cheapest_flight_finder.browsereturnQuotes(source, destination, out_date, return_date, max_budget)
+    cheapest_flight_finder.browsereturnQuotes(source, destination, out_date, return_date)
     
 
-def search_30dayreturn(source_array, destination_array, source_begin_date, source_end_date, max_budget):
+def search_30dayreturn(source_array, destination_array, source_begin_date, source_end_date):
     """Function to search for return flights between two destinations"""
     # Configure dates
     daterange_source = pd.date_range(source_begin_date, source_end_date)
@@ -175,7 +171,7 @@ def search_30dayreturn(source_array, destination_array, source_begin_date, sourc
 
                         # Execute worker    
                         return_date = single_date + datetime.timedelta(days=i) 
-                        executor.submit(cheapest_flight_finder.browsereturnQuotes, source, destination, single_date, return_date, max_budget)
+                        executor.submit(cheapest_flight_finder.browsereturnQuotes, source, destination, single_date, return_date)
 
 def process_places():
     '''Function to fill a database table with info on places'''
@@ -187,7 +183,7 @@ def process_places():
     for i in range(0, len(unique_ids)):
         cheapest_flight_finder.submitPlaceInfo(unique_ids[i][0])
    
-def search_oneyearreturn(source_array, destination_array, max_budget):
+def search_oneyearreturn(source_array, destination_array):
     """Function to loop 30 day search over a one year period starting from today"""
     # Dates
     source_begin_date = pd.date.today()
