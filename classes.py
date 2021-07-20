@@ -101,10 +101,17 @@ class finder:
                 price = Quotes["MinPrice"]
 
                 # Retrieve continent of destination and retrieve continental price limit
-                sql = "SELECT continent FROM place_info WHERE skyscanner_code = (%s)"
-                values = [self.skyscannercodes[dest]]
-                destination_continent = run_sql(sql,values)
-                continental_budget = budgets_by_continent[destination_continent[0][0]]
+                while True:
+                    try:
+                        sql = "SELECT continent FROM place_info WHERE skyscanner_code = (%s)"
+                        values = [self.skyscannercodes[dest]]
+                        destination_continent = run_sql(sql,values)
+                        continental_budget = budgets_by_continent[destination_continent[0][0]]
+                        break
+                    
+                    except:
+                        # destination was not found in place_info, run submit_placeinfo method
+                        self.submitPlaceInfo(self.skyscannercodes[dest])
 
                 # return trip
                 if self.trip_type == "return":
