@@ -96,13 +96,13 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         # Configure initial return date & cheapest flight
         out_date = outward_flights[i]["outdate"]
 
-        # Loop through 30 subsequent days from date of outward flight
+        # Loop through 10 subsequent days from date of outward flight
         for j in range (1, 10):
             # Configure dates
             return_date = out_date + datetime.timedelta(days=j)
 
             # Contact API for cheapest return flights (this will insert into return_flights table in DB)
-            cheapest_flight_finder.browsereturnQuotes(outward_flights[i]["origin_id"], outward_flights[i]["destination_id"], out_date, return_date, max_total_price)
+            cheapest_flight_finder.browsereturnQuotes(outward_flights[i]["origin_id"], outward_flights[i]["destination_id"], out_date, return_date)
 
             sleep(1)
 
