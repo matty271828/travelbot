@@ -17,7 +17,7 @@ skyscanner_response_codes = {
                                 500:"Server Error – An internal server error has occurred which has been logged."
 }
 
-budgets_by_continent = {"EU":20,"NA":150,"SA":200,"AS":200,"OC":300,"AF":100}
+budgets_by_continent = {"EU":10,"NA":300,"SA":200,"AS":200,"OC":300,"AF":200,"Unknown":0}
 
 class finder:
     def __init__(self, originCountry = "UK", currency = "GBP", locale = "en", rootURL="https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"):
@@ -102,7 +102,7 @@ class finder:
 
                 # Retrieve continent of destination and retrieve continental price limit
                 sql = "SELECT continent FROM place_info WHERE skyscanner_code = (%s)"
-                values = [self.skyscannercodes[source]]
+                values = [self.skyscannercodes[dest]]
                 destination_continent = run_sql(sql,values)
                 continental_budget = budgets_by_continent[destination_continent[0][0]]
 
