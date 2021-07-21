@@ -35,7 +35,7 @@ def search_oneway(source_array, destination_array, source_begin_date, source_end
     daterange_source = pd.date_range(source_begin_date, source_end_date)
 
     # Contact API for cheapest one way flights
-    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         for single_date in daterange_source:
             for destination in destination_array:
                 for source in source_array:
@@ -96,8 +96,8 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         # Configure initial return date & cheapest flight
         out_date = outward_flights[i]["outdate"]
 
-        # Loop through 10 subsequent days from date of outward flight
-        for j in range (1, 10):
+        # Loop through subsequent days from date of outward flight
+        for j in range (1, 30):
             # Configure dates
             return_date = out_date + datetime.timedelta(days=j)
 
