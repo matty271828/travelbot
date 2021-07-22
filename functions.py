@@ -80,8 +80,10 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
     return_flights = []
 
     # For each outward flight, run return searches over the subsequent 30 days and save cheapest flight
-    # Flight number limit, limits numbers of flights to run return search on in order to protect performance
+    # Limits numbers of flights to run return search on and length of searches by continent
     flight_number_limit = len(outward_flights)
+    searchlength_bycontinent = {"EU":7,"NA":150,"SA":180,"AS":180,"OC":500,"AF":10}
+
     # Adjust this range to run return searches on more outward journeys
     for i in range(0, len(outward_flights)):
         # Start timer
@@ -93,11 +95,23 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         sql = "DELETE FROM return_flights"
         clear_return_flights = run_sql(sql)
     
-        # Configure initial return date & cheapest flight
+        # Configure out date & cheapest flight
         out_date = outward_flights[i]["outdate"]
 
+        #retrieve continent of destination to scale search length based on continent
+        sql = "SELECT country, continent FROM place_info WHERE skyscanner_code = (%s)"
+        values = [outward_flights[i]["destination_id"]]
+        sql_retrieval = run_sql(sql,values)
+
+        print(sql_retrieval)
+
+        country = sql_retrieval[0][0]
+        continent = sql_retrieval[0][1]
+
+        search_length = searchlength_bycontinent[continent]
+
         # Loop through subsequent days from date of outward flight
-        for j in range (1, 30):
+        for j in range (1, search_length):
             # Configure dates
             return_date = out_date + datetime.timedelta(days=j)
 
@@ -118,7 +132,7 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
             return_flights.append(cheapest_flight)
 
             # SQL query to insert details of cheapest flight into DB
-            sql = "INSERT INTO best_flights (origin_id, source, destination_id, dest, price, outdate, indate) VALUES (%s,%s,%s,%s,%s,%s,%s)"
+            sql = "INSERT INTO best_flights (origin_id, source, destination_id, dest, country, continent, price, outdate, indate) VALUES (%s,%s,%s,%s,%s,%s,%s)"
             values = [cheapest_flight[0][0],cheapest_flight[0][1],cheapest_flight[0][2],cheapest_flight[0][3],cheapest_flight[0][4],cheapest_flight[0][5],cheapest_flight[0][6]]
             results = run_sql(sql, values)
 

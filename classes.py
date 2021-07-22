@@ -17,7 +17,7 @@ skyscanner_response_codes = {
                                 500:"Server Error – An internal server error has occurred which has been logged."
 }
 
-budgets_by_continent = {"EU":10,"NA":180,"SA":300,"AS":300,"OC":400,"AF":200,"Unknown":0}
+budgets_by_continent = {"EU":10,"NA":18,"SA":30,"AS":30,"OC":40,"AF":20,"Unknown":0}
 
 class finder:
     def __init__(self, originCountry = "UK", currency = "GBP", locale = "en", rootURL="https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"):
