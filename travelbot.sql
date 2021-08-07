@@ -18,9 +18,9 @@ CREATE TABLE best_flights (
 );
 
 CREATE TABLE countries_continents (
-    id INTEGER PRIMARY KEY
-    country UNIQUE
-    continent
+    id INTEGER PRIMARY KEY,
+    country TEXT UNIQUE,
+    continent TEXT
 );
 
 CREATE TABLE onewayflights (
