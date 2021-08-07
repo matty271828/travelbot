@@ -17,7 +17,7 @@ skyscanner_response_codes = {
                                 500:"Server Error – An internal server error has occurred which has been logged."
 }
 
-budgets_by_continent = {"EU":10,"NA":18,"SA":30,"AS":30,"OC":40,"AF":20,"Unknown":0}
+budgets_by_continent = {"EU":10,"NA":200,"SA":300,"AS":300,"OC":350,"AF":200,"Unknown":0}
 
 class finder:
     def __init__(self, originCountry = "UK", currency = "GBP", locale = "en", rootURL="https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com"):
@@ -60,10 +60,6 @@ class finder:
         if("Quotes" not in resultJSON):
             status = response.status_code
             print(f'{status}: {skyscanner_response_codes[status]}')
-
-            if status == 429:
-                print('sleeping 1 min')
-                sleep(60)
 
         # Submit to DB, 'None' given for return date, this also handles printing
         self.DBsubmission(resultJSON, outdate, None)
@@ -119,7 +115,7 @@ class finder:
 
                 # return trip
                 if self.trip_type == "return":
-                    if price < (2*continental_budget):
+                    if price < (2.5*continental_budget):
                         # Add trip info to SQL database, functions can then query these results
                         sql = "INSERT INTO return_flights (origin_id, source, destination_id, dest, price, outdate, indate) VALUES (%s,%s,%s,%s,%s,%s,%s)"
                         values = [self.skyscannercodes[source], self.airports[source], self.skyscannercodes[dest], self.airports[dest], price, outdate, indate]

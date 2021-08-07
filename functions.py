@@ -35,7 +35,7 @@ def search_oneway(source_array, destination_array, source_begin_date, source_end
     daterange_source = pd.date_range(source_begin_date, source_end_date)
 
     # Contact API for cheapest one way flights
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
         for single_date in daterange_source:
             for destination in destination_array:
                 for source in source_array:
@@ -80,10 +80,8 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
     return_flights = []
 
     # For each outward flight, run return searches over the subsequent 30 days and save cheapest flight
-    # Limits numbers of flights to run return search on and length of searches by continent
+    # Flight number limit, limits numbers of flights to run return search on in order to protect performance
     flight_number_limit = len(outward_flights)
-    searchlength_bycontinent = {"EU":7,"NA":150,"SA":180,"AS":180,"OC":500,"AF":10}
-
     # Adjust this range to run return searches on more outward journeys
     for i in range(0, len(outward_flights)):
         # Start timer
@@ -95,23 +93,11 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         sql = "DELETE FROM return_flights"
         clear_return_flights = run_sql(sql)
     
-        # Configure out date & cheapest flight
+        # Configure initial return date & cheapest flight
         out_date = outward_flights[i]["outdate"]
 
-        #retrieve continent of destination to scale search length based on continent
-        sql = "SELECT country, continent FROM place_info WHERE skyscanner_code = (%s)"
-        values = [outward_flights[i]["destination_id"]]
-        sql_retrieval = run_sql(sql,values)
-
-        print(sql_retrieval)
-
-        country = sql_retrieval[0][0]
-        continent = sql_retrieval[0][1]
-
-        search_length = searchlength_bycontinent[continent]
-
-        # Loop through subsequent days from date of outward flight
-        for j in range (1, search_length):
+        # Loop through 10 subsequent days from date of outward flight
+        for j in range (1, 10):
             # Configure dates
             return_date = out_date + datetime.timedelta(days=j)
 
@@ -125,7 +111,7 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         cheapest_flight = run_sql(sql)
 
         # Output
-        print(f'cheapest flight in loop: {cheapest_flight}')
+        print(cheapest_flight)
 
         if cheapest_flight != []:
             # Add cheapest to return flights array
