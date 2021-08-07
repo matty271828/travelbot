@@ -2,7 +2,6 @@ import os
 import psycopg2
 import psycopg2.extras as ext
 
-
 # Set environment variable
 # Set manually as 'dev' to run from local database
 ENV = 'dev'

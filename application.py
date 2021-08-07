@@ -41,6 +41,5 @@ clear_best_flights = run_sql(sql)
 
 search_30dayoutward(source_array, destination_array, source_begin_date, source_end_date)
 
-# Stats on runtime
 print("\nBenchmark Stats :")
 print("Time spent in program: %f seconds"%(time.time()-function_start))

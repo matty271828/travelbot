@@ -8,6 +8,7 @@ import time, datetime, dateutil
 from datetime import date
 from classes import finder
 from time import sleep
+
 '''
 This page handles functions for different flight formats. Edit the number of workers in order to speed up/slow done API contacting. 
 A rate limit > 500 contacts/s will result in a response error and induce a 1 minute timeout. 
