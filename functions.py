@@ -125,14 +125,14 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         cheapest_flight = run_sql(sql)
 
         # Output
-        print(cheapest_flight)
+        print(f'cheapest flight in loop: {cheapest_flight}')
 
         if cheapest_flight != []:
             # Add cheapest to return flights array
             return_flights.append(cheapest_flight)
 
             # SQL query to insert details of cheapest flight into DB
-            sql = "INSERT INTO best_flights (origin_id, source, destination_id, dest, country, continent, price, outdate, indate) VALUES (%s,%s,%s,%s,%s,%s,%s)"
+            sql = "INSERT INTO best_flights (origin_id, source, destination_id, dest, price, outdate, indate) VALUES (%s,%s,%s,%s,%s,%s,%s)"
             values = [cheapest_flight[0][0],cheapest_flight[0][1],cheapest_flight[0][2],cheapest_flight[0][3],cheapest_flight[0][4],cheapest_flight[0][5],cheapest_flight[0][6]]
             results = run_sql(sql, values)
 
