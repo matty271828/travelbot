@@ -1,6 +1,5 @@
 requests
 psycopg2-binary
-ssl
 email.mime.text
 dateutil
 pandas
