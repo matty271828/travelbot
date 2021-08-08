@@ -1,6 +1,5 @@
 requests
 psycopg2-binary
-dateutil
 pandas
 numpy
 concurrent.futures
