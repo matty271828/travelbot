@@ -2,6 +2,5 @@ requests
 psycopg2-binary
 pandas
 numpy
-concurrent.futures
 pycountry_convert
 
