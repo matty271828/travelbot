@@ -3,8 +3,8 @@ import json
 import os
 import time, datetime, dateutil
 import pandas as pd
-import smtplib,ssl
-from email.mime.text import MIMEText
+#import smtplib,ssl
+#from email.mime.text import MIMEText
 
 from functions import process_places, search_30dayreturn, search_oneway, search_30dayoutward, search_specificreturn
 from run_sql import run_sql
