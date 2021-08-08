@@ -1,6 +1,5 @@
 requests
 psycopg2-binary
-smtplib
 ssl
 email.mime.text
 dateutil
