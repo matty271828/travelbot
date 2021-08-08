@@ -1,7 +1,7 @@
 import requests
 import json
 import os
-import time, datetime, dateutil
+import time, datetime
 import pandas as pd
 #import smtplib,ssl
 #from email.mime.text import MIMEText
