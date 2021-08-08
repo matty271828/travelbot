@@ -1,3 +1,11 @@
 requests
 psycopg2-binary
+smtplib
+ssl
+email.mime.text
+dateutil
+pandas
+numpy
+concurrent.futures
+pycountry_convert
 
