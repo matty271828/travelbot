@@ -3,8 +3,8 @@ import json
 import os
 import time, datetime
 import pandas as pd
-#import smtplib,ssl
-#from email.mime.text import MIMEText
+import smtplib,ssl
+from email.mime.text import MIMEText
 
 from functions import process_places, search_30dayreturn, search_oneway, search_30dayoutward, search_specificreturn
 from run_sql import run_sql
@@ -16,7 +16,7 @@ destination_array = {"everywhere"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-09-01")
-source_end_date =  pd.to_datetime("2021-09-02")
+source_end_date =  pd.to_datetime("2021-06-01")
 
 # time request
 total_compute_time = 0.0
