@@ -16,6 +16,9 @@ A rate limit > 500 contacts/s will result in a response error and induce a 1 min
 
 show_testcode = 'no'
 
+# minimum and maximum trip length by continent
+triprange_bycontinent =  {"EU":(1,4),"NA":(5,12),"SA":(5,12),"AS":(5,12),"OC":(5,20),"AF":(3,10),"Unknown":(1,2)}
+
 # Retrieve API key
 api_key = os.environ.get("SKYSCANNER_API_KEY")
 
@@ -98,7 +101,7 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         out_date = outward_flights[i]["outdate"]
 
         # Loop through 10 subsequent days from date of outward flight
-        for j in range (1, 10):
+        for j in range (5, 20):
             # Configure dates
             return_date = out_date + datetime.timedelta(days=j)
 
