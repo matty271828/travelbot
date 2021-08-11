@@ -12,11 +12,11 @@ from run_sql import run_sql
 # Airports where we can fly from
 source_array = {"UK-sky"} 
 # Our destination airports
-destination_array = {"US-sky","everywhere"}
+destination_array = {"everywhere"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-08-20")
-source_end_date =  pd.to_datetime("2022-01-31")
+source_end_date =  pd.to_datetime("2021-09-30")
 
 # time request
 total_compute_time = 0.0
