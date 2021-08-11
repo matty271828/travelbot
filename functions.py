@@ -75,11 +75,6 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
 
     print(f"\nonewayflight search finished.\n")
 
-    run_locationprocessing = 'no'
-    # Run function to add airports never before encountered to place_info DB
-    if run_locationprocessing == 'yes':
-        process_places()
-
     # List to store return flights
     return_flights = []
 
@@ -100,8 +95,14 @@ def search_30dayoutward(source_array, destination_array, source_begin_date, sour
         # Configure initial return date & cheapest flight
         out_date = outward_flights[i]["outdate"]
 
+        # Retrieve continent and trip length range
+        sql = "SELECT continent FROM place_info WHERE skyscanner_code = (%s)"
+        values = [outward_flights[i]["destination_id"]]
+        destination_continent = run_sql(sql,values)
+        trip_range = triprange_bycontinent[destination_continent[0][0]]
+
         # Loop through 10 subsequent days from date of outward flight
-        for j in range (5, 20):
+        for j in range (trip_range[0], trip_range[1]):
             # Configure dates
             return_date = out_date + datetime.timedelta(days=j)
 

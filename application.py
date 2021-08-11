@@ -16,7 +16,7 @@ destination_array = {"everywhere"}
 
 # Dates
 source_begin_date = pd.to_datetime("2021-08-20")
-source_end_date =  pd.to_datetime("2021-09-30")
+source_end_date =  pd.to_datetime("2021-08-23")
 
 # time request
 total_compute_time = 0.0
