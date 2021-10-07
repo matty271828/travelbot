@@ -5,6 +5,8 @@ import time, datetime
 import pandas as pd
 import smtplib,ssl
 from email.mime.text import MIMEText
+import time, datetime
+from datetime import timedelta, date
 
 from functions import process_places, search_30dayreturn, search_oneway, search_30dayoutward, search_specificreturn
 from run_sql import run_sql
@@ -12,11 +14,14 @@ from run_sql import run_sql
 # Airports where we can fly from
 source_array = {"UK-sky"} 
 # Our destination airports
-destination_array = {"everywhere"}
+destination_array = {"US-sky","everywhere"}
 
 # Dates
-source_begin_date = pd.to_datetime("2021-08-20")
-source_end_date =  pd.to_datetime("2021-09-30")
+begin_date = date.today() + timedelta(days=1)
+end_date = begin_date + timedelta(days=120)
+
+source_begin_date = pd.to_datetime(begin_date)
+source_end_date =  pd.to_datetime(end_date)
 
 # time request
 total_compute_time = 0.0
