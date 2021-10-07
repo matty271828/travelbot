@@ -18,7 +18,7 @@ destination_array = {"US-sky","everywhere"}
 
 # Dates
 begin_date = date.today() + timedelta(days=1)
-end_date = begin_date + timedelta(days=120)
+end_date = begin_date + timedelta(days=200)
 
 source_begin_date = pd.to_datetime(begin_date)
 source_end_date =  pd.to_datetime(end_date)
