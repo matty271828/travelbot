@@ -12,9 +12,13 @@ After discovering Skyscanner had a handy API to output 10s of thousands of their
 
 The core code includes the API contact and interpration of the JSON response, as well as use of threading in python to speed up run time. 
 
-I then took a different route than the tutorial in the implementation of a trip planner. I have developed my own algorithm and automated running of the programme to search for cheap flights thorughout the year and send automated emails with good offers. (Please note development is still ongoing as of time of writing of this document).
+I then developed a simple algorithm to search for cheap return flights thorughout the year. The algorithm consists of the following steps:
+
+1. Read in Skyscanner's output of daily one way flight searches
+2. For each flight, read
 
 ### Database
+For this project, I used PostgreSQL to create and update a database. A local version was maintained for testing on my machine, and a production version was maintained on Heroku for use with the main web application. 
 
 ### Heroku hosting
 
