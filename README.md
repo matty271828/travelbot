@@ -12,10 +12,17 @@ After discovering Skyscanner had a handy API to output 10s of thousands of their
 
 The core code includes the API contact and interpration of the JSON response, as well as use of threading in python to speed up run time. 
 
-I then developed a simple algorithm to search for cheap return flights thorughout the year. The algorithm consists of the following steps:
+I then developed a simple algorithm to search for good-value return flights thorughout the year. The algorithm consists of the following steps:
 
-1. Read in Skyscanner's output of daily one way flight searches
-2. For each flight, read
+1. Read in Skyscanner's daily output of one way flights scheduled for the next year. 
+2. For each flight, review the price 
+  3. If price is less than a pre-determined continental weighting, save to database 
+  4. Else reject the flight (i.e. do not save it)
+5. For each one way flight, check the prices of return journeys for the following 21 days
+  6. If the combined outward and return price is less than 1.5x the continental weighting, save to database
+  7. Else reject the flight (i.e. do not save it)
+
+The output is a database table filled with trips of varying lengths from the UK to global airports. 
 
 ### Database
 For this project, I used PostgreSQL to create and update a database. A local version was maintained for testing on my machine, and a production version was maintained on Heroku for use with the main web application. 
