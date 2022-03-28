@@ -1,6 +1,8 @@
 # travelbot
 Programme to automate finding cheap prices on flights.
 
+![travelbot_ Browse](https://user-images.githubusercontent.com/65253959/160440264-7ba7ea7e-8bd5-4802-babd-06525260b972.jpeg)
+
 The core code of this programme is taken from the following example usage of the skyscanner API: https://blog.shreyasgokhale.com/tech-blog/eurotrip-planner-part-1/?fbclid=IwAR0vw4LB03L9ithg7TxgFeI9ZxfKwVGfj3QCHr5uvO5gj8Z-AKrUEUBaROA#
 
 The core code includes the API contact and interpration of the JSON response, as well as use of threading in python to speed up run time. 
