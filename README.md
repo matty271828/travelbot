@@ -28,8 +28,9 @@ The output is a database table filled with trips of varying lengths from the UK 
 For this project, I used PostgreSQL to create and update a database. A local version was maintained for testing on my machine, and a production version was maintained on Heroku for use with the main web application. 
 
 ### Heroku hosting
+I used the cloud service Heroku to host my web application. This was extremely useful since as well the hosting the front-end, I was able to use it to host a central production database (which could be accessed by both repositories), and schedule the programme to run daily and update the database. The front-end (https://github.com/matty271828/travelbotonline) could then pull directly from this database. 
 
-I used the cloud service Heroku to host my web application. This was extremely useful since as well the hosting the front-end, I was able to use it to host a production database, and schedule the programme to run daily and update the database. The front-end (https://github.com/matty271828/travelbotonline) could then pull directly from this database.  
+During development, I utilised a local server to be able to test the application without updating and potentially interrupting the live web app. 
 
 ### Screenshots of Web Application
 
