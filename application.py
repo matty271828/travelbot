@@ -23,6 +23,8 @@ end_date = begin_date + timedelta(days=200)
 source_begin_date = pd.to_datetime(begin_date)
 source_end_date =  pd.to_datetime(end_date)
 
+# -----------------------------------------------------------------------
+
 # time request
 total_compute_time = 0.0
 total_request_time = 0.0
@@ -37,8 +39,8 @@ clear_return_flights = run_sql(sql)
 sql = "DELETE FROM onewayflights"
 clear_onewayflights = run_sql(sql)
 
-sql = "DELETE FROM best_flights"
-clear_best_flights = run_sql(sql)
+#sql = "DELETE FROM best_flights"
+#clear_best_flights = run_sql(sql)
 
 #sql = "DELETE FROM place_info"
 #clear_place_info = run_sql(sql)
@@ -46,26 +48,15 @@ clear_best_flights = run_sql(sql)
 #sql = "DELETE FROM countries_continents"
 #clear_place_info = run_sql(sql)
 
-search_30dayoutward(source_array, destination_array, source_begin_date, source_end_date)
+# -------------------- Dummy data inserted as Skyscanner API has now been depriciated --------
+# populate database with dummy date due to API depreciation
+sql = f"INSERT INTO best_flights (id, origin_id, source, destination_id, dest, country, continent, price, outdate, indate) VALUES (1, 'LPL', 'Liverpool John Lennon Airport', 'CDG', 'Paris - Charles De Gaulle', 'France', 'EU', 15, '2022-07-07', '2022-07-12')"
+populate_dummy_data = run_sql(sql)
+
+# -----------------------------------------------------------
+# Function call to conduct search for best flights using skyscanner API
+#search_30dayoutward(source_array, destination_array, source_begin_date, source_end_date)
 
 print("\nBenchmark Stats :")
 time_in_programme = time.time()-function_start
 print("Time spent in program: %f seconds"%(time_in_programme))
-
-# Send email with status update for application
-#sender = "mattycodeupdates@gmail.com"
-#receivers = ["macleanmatty@gmail.com"]
-#body_of_email = (f"travelbot script completed in: {time_in_programme}s")
-
-#msg = MIMEText(body_of_email, "html")
-#msg["Subject"] = "Travelbot status update"
-#msg["From"] = sender
-#msg["To"] = ",".join(receivers)
-
-# Get email key
-#codeupdates_key = os.environ.get('email_key')
-
-#s = smtplib.SMTP_SSL(host = "smtp.gmail.com", port = 587)
-#s.login(user = "mattycodeupdates@gmail.com", password = codeupdates_key)
-#s.sendmail(sender, receivers, msg.as_string())
-#s.quit()
