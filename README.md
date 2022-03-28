@@ -5,6 +5,8 @@ The core code of this programme is taken from the following example usage of the
 
 The core code includes the API contact and interpration of the JSON response, as well as use of threading in python to speed up run time. 
 
-![travelbot_ Browse](https://user-images.githubusercontent.com/65253959/160440264-7ba7ea7e-8bd5-4802-babd-06525260b972.jpeg)
-
 I then took a different route than the tutorial in the implementation of a trip planner. I have developed my own algorithm and automated running of the programme to search for cheap flights thorughout the year and send automated emails with good offers. (Please note development is still ongoing as of time of writing of this document).
+
+![travelbot_ Home](https://user-images.githubusercontent.com/65253959/160440743-27c71312-8e33-4b73-8621-310758244b47.jpg)
+
+![travelbot_ Browse](https://user-images.githubusercontent.com/65253959/160440264-7ba7ea7e-8bd5-4802-babd-06525260b972.jpeg)
