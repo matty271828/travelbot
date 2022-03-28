@@ -2,7 +2,7 @@
 
 ### Project Background
 
-The files in this repository act as the backend for my TravelBot web application. I developed this application to search for cheap flights daily and output the results to a web-page. A separate repository contains the files for the application front end and can be found here ():
+The files in this repository act as the backend for my TravelBot web application. I developed this application to search for cheap flights daily and output the results to a web-page. A separate repository contains the files for the application front end and can be found here (https://github.com/matty271828/travelbotonline):
 
 One may ask why bother? Don't services such as Skyscanner, Expedia or Kayak already fulfill this function? Yes they do. However with the power of programing we are able to do more!
 
@@ -31,7 +31,7 @@ For this project, I used PostgreSQL to create and update a database. A local ver
 
 I used the cloud service Heroku to host my web application. This was extremely useful since as well the hosting the front-end, I was able to use it to host a production database, and schedule the programme to run daily and update the database. The front-end could then pull directly from this database. 
 
-A separate repository hosting the front-end of my application is located here (). 
+A separate repository hosting the front-end of my application is located here (https://github.com/matty271828/travelbotonline). 
 
 ### Screenshots of Web Application
 
