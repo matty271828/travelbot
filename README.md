@@ -29,6 +29,10 @@ For this project, I used PostgreSQL to create and update a database. A local ver
 
 ### Heroku hosting
 
+I used the cloud service Heroku to host my web application. This was extremely useful since as well the hosting the front-end, I was able to use it to host a production database, and schedule the programme to run daily and update the database. The front-end could then pull directly from this database. 
+
+A separate repository hosting the front-end of my application is located here (). 
+
 ### Screenshots of Web Application
 
 ![travelbot_ Home](https://user-images.githubusercontent.com/65253959/160440885-69161e01-78ec-421e-be83-269159eec961.jpeg)
